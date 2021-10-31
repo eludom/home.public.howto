@@ -1,0 +1,204 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: Notes on installing Gitea
+#+date: <2021-10-31 Sun 15:21:54>
+#+author: George M Jones
+#+email: gmj@pobox.com
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.0.50 (Org mode 9.4)
+
+* Intro
+** What
+
+   These are notes-to-self on installing gitea
+
+** Why
+
+   - Curiousity
+
+   - A desire to move off github
+     + It's Microsoft
+     + It's centralized
+     + "Learn Git and GitHub without any code!" ???? Only a marketing
+       person who can't code could come up with that.
+      
+** Where
+
+   - On my raspberry pi running Ubuntu
+
+** Who
+
+   - Me, myself and I
+
+* How
+** Ansible
+   I used ansible to install Gitea.  Ansible is it's own HOWTO.
+   
+** Install gitea via ansible role
+    Using this ansible role at
+    https://github.com/roles-ansible/ansible_role_gitea.  The basic
+    process was:
+
+    #+begin_example
+    ansible-galaxy install do1jlr.gitea
+    ansible-playbook -i hosts.txt gitea.yaml
+    #+end_example
+
+    Where hosts.txt contained the name of the system on which to
+    install gitea.
+** Ansible configuration
+*** Files
+    =/etc/gitea/gitea.ini= - the main config file
+*** Users - Unix Users
+    - "gitea" - user created by role for use by the daemon
+    - "git" - user created by role for use with git
+** Configuring gitea
+*** Adding gitea users
+
+    List users with
+    =sudo -u gitea gitea -c /etc/gitea/gitea.ini admin user list=
+
+    Add users with
+    =sudo -u gitea gitea -c /etc/gitea/gitea.ini admin user create ...=
+*** Starting and stopping
+    Start and stop gitea thusly...
+    #+begin_example
+    sudo systemctl status gitea
+    sudo systemctl start gitea
+    sudo systemctl stop gitea
+    #+end_example
+
+*** Initial changes to gitea.init
+
+    I made the following changes to =/etc/gitea/gitea.ini=
+
+    #+begin_example
+    $ diff gitea.ini.orig gitea.ini
+9c9
+< APP_NAME = Gitea
+---
+> APP_NAME = Galthub: Create or Leave
+16c16
+< ROOT                = /var/lib/gitea/repos
+---
+> ROOT                = /data/gitea/repos
+20c20
+< DEFAULT_BRANCH      = main
+---
+> DEFAULT_BRANCH      = master
+21a22
+> ENABLE_PUSH_CREATE_USER = true
+34a36
+> 
+40,42c42,44
+< DOMAIN                = localhost
+< ROOT_URL              = http://localhost:3000
+< HTTP_ADDR             = 127.0.0.1
+---
+> DOMAIN                = home.port111.com
+> ROOT_URL              = http://hangout.home.port111.com:3000
+> HTTP_ADDR             = 0.0.0.0
+45c47
+< SSH_DOMAIN            = localhost
+---
+> SSH_DOMAIN            = hangout.home.port111.com
+49c51
+< APP_DATA_PATH         = /var/lib/gitea/data
+---
+> APP_DATA_PATH         = /data/gitea/data
+    #+end_example
+
+*** Moving default locations
+  Note above that I moved a few of the default locations to
+  =/data/gitea/*= to
+
+  1. To minimize updates and data storage on the raspberry pi's microSD
+    card
+     + limited writes, and I've already lost the system to bitrot/power spikes once
+  2. Increase capacity
+     + to a whopping huge 16GB, but it could easily be a multi-TB
+       device if I ever write that much code :-)
+
+       
+
+*** Adding an SSH key
+    In the UI under settings -> SSH/GPG keys I added a public key I
+    intend to use for push pulls
+*** Testing things out
+    I logged in and created a test repository with a README in the UI which I was
+    then able to clone as
+
+**** Cloning the test repo
+     
+    #+begin_example
+    git clone ssh://gitea@hangout.home.port111.com:2222/gmj/test.git
+    echo FOO >> foo.txt
+    git add foo.txt 
+    git commit -mbar
+    git push
+    #+end_example
+
+**** Adding and pushing a new
+
+     I was then able to add a new repo as
+     
+     #+begin_example
+     mkdir new-repo
+     cd new-repo
+     git init .
+     echo FOO >> foo.txt
+     git add foobar.txt 
+     git commit -mtest
+     git remote add hangout ssh://gitea@hangout.home.port111.com:2222/gmj/new-repo.git
+     git push --set-upstream hangout master
+     #+end_example
+
+
+     Note this only works if you add
+     
+     =ENABLE_PUSH_CREATE_USER = true=
+
+     to the gitea.ini
+
+*** Some notes about ports and domain names
+    I'm playing games with the domain name for local testing that I
+    hope will work when I make this public:
+
+    - port111.com :: I am parking everything under =port111.com=, which
+      is a public domain name I own.   This avoids conflicts with
+      other uses of .local or having some fake domain (.e.g. .home)
+      that is actually registered resolve if queries go beyond the
+      local nameservers.
+
+    - home.port111.com :: I am using a local https://pi-hole.net/ to
+      actually serve up *.home.port111.com within my local network.
+      Globally, at present, they will return NXDOMAAIN records.
+
+    - Adding a public CNAME :: The plan is to put this up publicly, at which point I will add a
+      public DNS record (probably a CNAME) pointing where this lives
+
+*** Adding some actual content
+    - pushing my HOWTO repos :: Because all things computing must
+      start with recursion, the first /real/ thing I will add to this
+      repo is my public HOWTO docs, incuding this writeup...
+      
+*** More configuration
+*** Network considerations                                         :noexport:
+**** TODO test with mysocket
+     Go public (at least for testing) with
+     https://mysocket.readthedocs.io/en/latest/about/about.html#quick-start
+*** Security Considerations                                        :noexport:
+**** TODO Make sure accounts and passwords are reasonable
+**** TODO Review auto-signup options
+     - Possibly just remove sign-up
+**** TODO Choose ports not as likely to be scanned
+     Before going live ports not commonly scanned (e.g. by shodan or censys)
+**** TODO Use lets-encrypt self signed certificate
+     - May not matter if info is not sensitive and pushed are all done
+       with ssh
+
