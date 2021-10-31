@@ -1,0 +1,294 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: Notes on setting up ansible
+#+date: <2021-10-31 Sun 15:29:41>
+#+author: George M Jones
+#+email: gmj@pobox.com
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.0.50 (Org mode 9.4)
+
+* Intro
+** What
+  
+ This is a HOWTO on installing/using FOO...
+
+** Why
+   - I want use ansible because I install a lot of things, and
+     sometimes machines go down, I need to re-install, I forget what I
+     did, etc.
+   - Ansible is simple-ish (in concept) ... set up SSH on the clients
+     and let the master push things out and insure the state is
+     consistent.  No agents (puppet).  In practice, it looks like it's
+     gotten complex and marketing has gotten involved :-(
+    
+** Where
+   - I'm installing Ansible on my laptop (master) and Raspberry Pi
+     (target) for starters.
+
+** Who
+   - I document things I learn/install mostly for myself so I won't
+     have to re-learn them
+
+* How
+** Links/Info
+   - overview/tutorial :: https://www.tutorialspoint.com/ansible/ansible_introduction.htm
+   - wikipedia :: https://en.wikipedia.org/wiki/Ansible_(software)
+   - vendor intro :: https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html
+     
+** I did this
+*** Ansible install and setup
+**** On the master
+     
+    - [ ] install using apt
+      #+begin_example
+      sudo apt-get install ansible
+      #+end_example
+
+    - [ ] re-install latest version using pip
+       
+      I originally installed using apt.   This pulled down 2.9.  I
+      later re-installed form source (2.11) due to some
+      incompatability
+
+      #+begin_example
+      python3 -m pip install ansible
+      ansible --version
+      #+end_example
+
+    - [ ] Create an ansible user 
+
+      #+begin_example
+      sudo useradd ansible
+      sudo passwd ansible
+      sudo mkdir ~ansible
+      sudo chown ansible.ansible ~ansible
+      sudo passwd ansible
+      ssh ansible@localhost
+      #+end_example
+
+    - [ ] Create a new SSH key
+
+      Create a new .ssh public/private key pair to be used with
+      ansible and copy it to the ansible target:
+
+      #+begin_example
+      ssh-keygen -t rsa -b 4096 -C "ansible@ed"
+
+
+      ssh-copy-id -i ~/.ssh/id_rsa.pub hangout
+      #+end_example
+
+    - [ ] Set up the hosts file
+
+      My =/etc/ansible/hosts= file looks like this
+
+      #+begin_example
+hangout.home
+
+[ubuntu]
+hangout.home
+ [ubuntu:vars]
+# ansible_private_key_file=/home/user/.ssh/id_rsa
+# ansible_user=admin
+ ansible_become=yes
+ ansible_become_method=sudo
+      #+end_example
+
+      "hangout.home" is resolved via my local [[https://pi-hole.net/][Pi-hole DNS server]]
+      pointing at my raspberry pi
+
+**** On the client[s]
+    - [ ] Create an ansible user 
+
+      #+begin_example
+      sudo useradd ansible
+      sudo passwd ansible
+      sudo mkdir ~ansible
+      sudo chown ansible.ansible ~ansible
+      sudo passwd ansible
+      ssh ansible@localhost
+      #+end_example
+
+    - [ ] Create ~/.ssh/authorized_keys
+
+      #+begin_example
+      Copy ~/.ssh/id_rsa.pub (from the master) to
+      ~/.ssh/authorized_keys to allow password-less logins
+
+      OR
+
+      ssh-copy-id -i ~/.ssh/id_rsa.pub hangout
+
+      on the master
+      #+end_example
+
+
+
+**** Testing connectivity
+
+     Test connectivity with =-m ping=
+
+     #+begin_example
+     $ ansible all -m ping
+     
+hangout | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+     #+end_example
+
+**** Run an ad-hoc command
+
+     #+begin_example
+     $ ansible all -m shell -a uptime
+hangout | CHANGED | rc=0 >>
+ 11:17:01 up  6:41,  6 users,  load average: 0.36, 0.22, 0.09
+     #+end_example
+
+*** Playbook books
+    
+**** Create and run simple playbook to update ubuntu and run it
+
+#+begin_example
+$ cat <<EOF > playbooks/update-ubuntu2.yml 
+> - hosts: ubuntu
+>   tasks:
+>     - name: Update cache 
+>       apt:
+>        update_cache: yes
+>          
+>     - name: Upgrade all packages on servers
+>       apt: 
+>         name: "*"
+>         state: latest
+> EOF
+
+ansible-playbook playbooks/update-ubuntu.yml -i /etc/ansible/hosts 
+
+#+end_example
+
+*** Install gitea via ansible-galaxy playbook
+
+    See https://github.com/roles-ansible/ansible_role_gitea
+    
+    #+begin_example
+    ansible-galaxy install do1jlr.gitea
+    #+end_example
+
+*** Raw commands                                                   :noexport:
+**** On the client
+    14  git clone https://github.com/roles-ansible/ansible_role_gitea.git
+   16  cd ansible_role_gitea/
+   23  man ansible-galaxy
+   24  man ansible-galaxy
+   43  ansible-galaxy install do1jlr.gitea
+   44  more ~/.ansible/roles/do1jlr.gitea/README.md 
+   45  more /etc/ansible/hosts 
+   57  man ansible-playbook~
+   58  man ansible-playbook
+   59  man ansible-playbook
+   60  ansible-inventory
+   61  ansible-inventory --list
+   64  ansible-playbook -i hangout.local gitea.yaml 
+   66  ansible-playbook -i hangout.inventory gitea.yaml 
+   67  ansible-playbook -i hangout.inventory gitea.yaml 
+   68  ansible-playbook -i hangout.invetory gitea.yaml
+   70  ansible-playbook -i, hangout.local gitea.yaml 
+   71  ansible-playbook -i, hangout.home gitea.yaml 
+   72  ansible-playbook -i hangout.local, gitea.yaml 
+   78  ansible-playbook -i hangout.local, gitea.yaml 
+   79  ed ~/.ansible/roles/do1jlr.gitea/tasks/main.yml 
+   80  emacs ~/.ansible/roles/do1jlr.gitea/tasks/main.yml 
+   81  emacs ~/.ansible/roles/do1jlr.gitea/tasks/main.yml 
+   83  ansible --version
+   97  emacs ~/.ansible/roles/do1jlr.gitea/tasks/main.yml 
+   98  ansible-playbook -i hangout.local, gitea.yaml 
+  103  ansible-playbook -i hangout.local, gitea.yaml 
+  104  ansible --version
+  113  sudo python -m pip install ansible
+  114   python -m pip install --user ansible
+  124  sudo python3 -m pip install ansible
+  125  python3 -m pip install ansible
+  127  ansible --version
+  135  ansible-playbook -i hangout.local, gitea.yaml 
+  136  ansible-playbook -i hangout.local gitea.yaml 
+  139  ansible-playbook -i hosts.txt gitea.yaml 
+  152  cd ansible_role_gitea/
+  169  ssh ansible@localhost
+  170  ssh ansible@localhost
+  172  ssh ansible@localhost
+  181  ssh-add -i ~/.ssh/id_rsa.pub ansible
+  186  ssh-add -i ~/.ssh/id_rsa.pub ansible
+  187  ssh-copy-id -i ~/.ssh/id_rsa.pub ansible
+  194  ls -l /etc/ansible/
+  195  more /etc/ansible/ansible.cfg 
+  196  more /etc/ansible/hosts 
+  199  more /etc/ansible/hosts 
+  200  sudo ed /etc/ansible/hosts 
+  201  ansible all -m ping
+  202  ansible all -m ping
+  203  tree /etc/ansible/
+  204  ls /etc/ansible/hosts 
+  205  file  /etc/ansible/hosts 
+  206  cat   /etc/ansible/hosts 
+  207  cat   /etc/ansible/hosts 
+  208  file  /etc/ansible/hosts 
+  209  tree /etc/ansible/
+  210  more /etc/ansible/ansible.cfg 
+  211  ls /etc/ansible/
+  212  grep log /etc/ansible/ansible.cfg 
+  213  ls -l  /etc/ansible/ansible.cfg 
+  214  sudo ed  /etc/ansible/ansible.cfg 
+  215  ansible-doc -l
+  216  ansible-doc -l
+  217  ansible-doc -l
+  218  ansible-doc  panos_check
+  219  ansible all -m shell -a uptime
+  225  sudo ed  /etc/ansible/ansible.cfg 
+  227  sudo ed  /etc/ansible/ansible.cfg 
+  228  ansible all -m shell -a uptime
+  229  more var/log/ansible.log 
+  230  ansible all -m shell -a "free -m"
+  231  ls ~/.ansible/
+  232  cat  ~/.ansible/cp/9523b349eb 
+  233  file  ~/.ansible/cp/9523b349eb 
+  234  file ~/.ansible/tmp/
+  236  ansible all -m shell -a "fdisk -l"
+  237  ansible all -m shell -a "fdisk -l" --become
+  238  ansible-doc -l | grep deb
+  239  ansible-doc debconf
+  260  more templates/etc/ansible/facts.d/golang.fact.j2 
+  272  ansible-playbook playbooks/update-ubuntu.yml -i hosts
+  275  ansible-playbook playbooks/update-ubuntu.yml -i hosts
+  278  ansible-playbook playbooks/update-ubuntu.yml -i hosts
+  279  ansible-playbook playbooks/update-ubuntu.yml -i hangout
+  280  ansible-playbook playbooks/update-ubuntu.yml 
+  281  man ansible-playbook
+  282  ansible-playbook playbooks/update-ubuntu.yml 
+  284  ls -l /etc/ansible/hosts 
+  286  sudo cgrp /etc/ansible/hosts ansible
+  287  sudo chgrp /etc/ansible/hosts ansible
+  288  sudo chgrp ansible /etc/ansible/hosts 
+  289  ls -l /etc/ansible/hosts 
+  290  sudo chmod g+w /etc/ansible/hosts 
+  291  ls -l /etc/ansible/hosts 
+  292  ed /etc/ansible/hosts 
+  294  ansible-playbook playbooks/update-ubuntu.yml 
+  297  more var/log/ansible.log 
+  300  ansible-playbook playbooks/update-ubuntu.yml 
+  303  ed /etc/ansible/hosts 
+  304  ansible-playbook playbooks/update-ubuntu.yml 
+  305  ansible-playbook playbooks/update-ubuntu.yml 
+  319  ansible all -m ping
+  330  hg ansible
+
+
+

@@ -4,7 +4,7 @@
 #+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+options: timestamp:t title:t toc:t todo:t |:t
 #+title: Notes on installing Gitea
-#+date: <2021-10-31 Sun 15:21:54>
+#+date: <2021-10-31 Sun 15:38:56>
 #+author: George M Jones
 #+email: gmj@pobox.com
 #+language: en
@@ -37,7 +37,7 @@
 
 * How
 ** Ansible
-   I used ansible to install Gitea.  Ansible is it's own HOWTO.
+   I used ansible to install Gitea.  Ansible is it's own [[file:HOWTO-ansible.org][HOWTO-ansible.org]]
    
 ** Install gitea via ansible role
     Using this ansible role at
@@ -185,8 +185,16 @@
 *** Adding some actual content
     - pushing my HOWTO repos :: Because all things computing must
       start with recursion, the first /real/ thing I will add to this
-      repo is my public HOWTO docs, incuding this writeup...
-      
+      repo is my public HOWTO docs, including this writeup...
+
+
+      #+begin_example
+      git add HOWTO-gitea.org
+      git commit -m"Added gitea HOWTO"
+      git remote add hangout ssh://gitea@hangout.home.port111.com:2222/gmj/home.public.HOWTO.git
+      git push --set-upstream hangout master
+      #+end_example
+
 *** More configuration
 *** Network considerations                                         :noexport:
 **** TODO test with mysocket
