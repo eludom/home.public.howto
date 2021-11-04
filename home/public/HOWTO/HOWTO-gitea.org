@@ -4,7 +4,7 @@
 #+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+options: timestamp:t title:t toc:t todo:t |:t
 #+title: Notes on installing Gitea
-#+date: <2021-10-31 Sun 15:38:56>
+#+date: <2021-11-02 Tue 07:11:10>
 #+author: George M Jones
 #+email: gmj@pobox.com
 #+language: en
@@ -36,6 +36,11 @@
    - Me, myself and I
 
 * How
+** Links/Documentation
+   - cheat sheet :: https://docs.gitea.io/en-us/config-cheat-sheet
+   - ansible role for installing :: https://github.com/roles-ansible/ansible_role_gitea
+   - overview :: https://charlesreid1.github.io/setting-up-a-self-hosted-github-clone-with-gitea.html
+   - Making a repo public :: https://discourse.gitea.io/t/how-to-make-repository-public/675
 ** Ansible
    I used ansible to install Gitea.  Ansible is it's own [[file:HOWTO-ansible.org][HOWTO-ansible.org]]
    
@@ -196,17 +201,53 @@
       #+end_example
 
 *** More configuration
+    - profile :: Update profile, etc.
+    - no email :: Disable email notification (as I don't have email configured/tested yet)
+    - disable registration :: At the moment, this is just for me
+      pushing my own content, so I'm disabling new account
+      registration in =gitea.ini"
+
+#+begin_example
+[service]
+DISABLE_REGISTRATION              = true
+#+end_example
+*** Discoveries
+    - migration options :: Gitea has an option (via gui =+ -> New
+      Migration= to import data from github, etc.)
+*** Going public
+    - Allow access without login :: In gitea.ini (as installed by the
+      ansible role) you have to change REQUIRE_SIGIN_VIEW to false if
+      you want to allow anonymous/public to users, repos, etc.
+
+#+begin_example
+REQUIRE_SIGNIN_VIEW               = false
+#+end_example
+
+    - mysocket :: I'm initially making the git repo public via
+      https://mysocket.readthedocs.io/en/latest/about/about.html#quick-start
+    - public URL :: The initial public URL is http://long-pine-2463.edge.mysocket.io/gmj/home.public.howto
+    - CNAME :: I've added a CNAME of hangout.home.port111.com pointing
+      at the pubic URL
+    - Custom DNS Names	:: In myseocket, you have to add a Custom DNS Names
+
+
+CNAME
 *** Network considerations                                         :noexport:
 **** TODO test with mysocket
      Go public (at least for testing) with
      https://mysocket.readthedocs.io/en/latest/about/about.html#quick-start
 *** Security Considerations                                        :noexport:
-**** TODO Make sure accounts and passwords are reasonable
-**** TODO Review auto-signup options
+**** DONE Make sure accounts and passwords are reasonable
+     - State "DONE"       from "TODO"       [2021-10-31 Sun 16:40]
+     - deleted "eludom" account, enabled 2fa for gmj,
+**** DONE Review auto-signup options
+     - State "DONE"       from "TODO"       [2021-10-31 Sun 16:40]
      - Possibly just remove sign-up
+     - disabled
 **** TODO Choose ports not as likely to be scanned
      Before going live ports not commonly scanned (e.g. by shodan or censys)
 **** TODO Use lets-encrypt self signed certificate
      - May not matter if info is not sensitive and pushed are all done
        with ssh
+
 
