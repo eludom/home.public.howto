@@ -1,0 +1,130 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: Notes on setting up mysocket.io connections to local services
+#+date: <2021-11-06 Sat 09:52:49>
+#+author: George M Jones
+#+email: gmj@pobox.com
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.0.50 (Org mode 9.4)
+
+* Intro
+** What
+  
+ This is a HOWTO on setting up [[https://mysocket.io]] to point to my
+ local [[https://gitea.io/en-us/][gitea]] server
+
+
+** why
+   - It's useful
+   - It took a bit to figure out
+   - I may want to repeat it later and i forget details
+   - Others might want to do the same
+
+
+** where
+   - i'm installing mysocket and gitea on a raspberry pi on my home network
+
+** who
+   - Me, myself and I
+   - You
+
+** Possible future work
+   - SSH :: Repeat this for an SSH connection?
+   - CDN :: Since most=/=all of this content is static, see if there is
+     some cheap=/=free CDN I can park behind, 'cause my raspberry pi
+     will never survive being slashdotted if I every put up something
+     popular...
+
+* how
+** links/documentation
+   - mysocket docs ::
+     https://mysocket.readthedocs.io/en/latest/mysocketctl/mysocket.html#quick-connect-options
+     shows one-line connect options that combine the creation of
+     sockets, tunnels and establishing of connections outlined below.
+     If you're just getting started, try this first.  
+
+** setting up the socket and tunnel for http://gitea.port111.com
+
+*** install (one time)
+#+begin_example
+# done download mysocket binary
+curl https://download.edge.mysocket.io/linux_arm64/mysocketctl -o mysocketctl
+
+# done put the binary someplace on my $path
+chmod +x mysocketclt
+sudo mv mysocketctl /usr/local/bin/
+
+# done check version, show help
+mysocketctl -v
+mysocket -h
+
+# done login, show account
+mysocketctl login
+mysocketctl account show
+
+# done where the secret stuff goes
+ls -l ~/.mysocketio_token ~/.mysocket/
+#+end_example
+
+** create socket, tunnel (one time per socket)
+#+begin_example
+# done create a socket
+mysocketctl socket create -n "gaulthub"
+
+# done list the socket
+mysocketctl socket ls
+┌──────────────────────────────────────┬─────────────────────────────────────┬─────────┬──────┬────────────┬──────────┐
+│ socket id                            │ dns name                            │ port(s) │ type │ cloud auth │ name     │
+├──────────────────────────────────────┼─────────────────────────────────────┼─────────┼──────┼────────────┼──────────┤
+│ df5ace52-579e-4203-b031-2d279d946539 │ divine-violet-9569.edge.mysocket.io │ 80, 443 │ http │ false      │ gaulthub │
+└──────────────────────────────────────┴─────────────────────────────────────┴─────────┴──────┴────────────┴──────────┘
+
+# done create a tunnel for the socket
+mysocketctl tunnel create -s df5ace52-579e-4203-b031-2d279d946539
+
+#+end_example
+
+** Connect the socket (repeated, e.g. on host reboots)
+#+begin_example
+# DONE connect the socket and log
+mysocketctl tunnel connect -s df5ace52-579e-4203-b031-2d279d946539 -t 75b0dd6b-3c65-4a6a-9f74-02f289d1a87b \
+  -p 3000 --host gaulthub \
+  |& tee logs/2021-11-04-tunnel.log
+
+# DONE list the tunnels for the socket
+mysocketctl tunnel ls -s df5ace52-579e-4203-b031-2d279d946539
+┌──────────────────────────────────────┬──────────────────────────────────────┬───────────────┬────────────┐
+│ SOCKET ID                            │ TUNNEL ID                            │ TUNNEL SERVER │ RELAY PORT │
+├──────────────────────────────────────┼──────────────────────────────────────┼───────────────┼────────────┤
+│ df5ace52-579e-4203-b031-2d279d946539 │ 75b0dd6b-3c65-4a6a-9f74-02f289d1a87b │ 35.82.127.46  │       9291 │
+└──────────────────────────────────────┴──────────────────────────────────────┴───────────────┴────────────┘
+
+
+# pull default index.html
+curl https://divine-violet-9569.edge.mysocket.io/
+#+end_example
+
+** Set up CNAMEs (one time)
+#+begin_example
+
+# DONE Set up a CNAME pointing at DNS NAME
+# [OUTSIDE COMMAND LINE - wherever you set up your domain names]
+#
+# gaulthub.port111.com ==> divine-violet-9569.edge.mysocket.io
+
+# DONE Add a custom domain name to the the socket
+# [OUTSIDE COMMAND LINE - https://portal.mysocket.io/ UI]
+# Custom DNS Names	gaulthub.port111.com
+
+# pull default index.html via CNAME
+curl https://divine-violet-9569.edge.mysocket.io/
+
+#+end_example
+
+
+
