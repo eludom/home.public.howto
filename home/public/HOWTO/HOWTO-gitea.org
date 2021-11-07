@@ -3,8 +3,8 @@
 #+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
 #+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+options: timestamp:t title:t toc:t todo:t |:t
-#+title: Notes on installing Gitea 
-#+date: <2021-11-06 Sat 10:04:17>
+#+title: Notes on installing Gitea
+#+date: <2021-11-07 Sun 08:02:42>
 #+author: George M Jones 
 #+email: gmj@pobox.com 
 #+language: en
@@ -87,7 +87,7 @@
 9c9
 < APP_NAME = Gitea
 ---
-> APP_NAME = Galthub: Create or Leave
+> APP_NAME = GaltHub: Create or Leave!
 16c16
 < ROOT                = /var/lib/gitea/repos
 ---
@@ -98,24 +98,34 @@
 > DEFAULT_BRANCH      = master
 21a22
 > ENABLE_PUSH_CREATE_USER = true
-34a36
-> 
-40,42c42,44
+40,42c41,43
 < DOMAIN                = localhost
 < ROOT_URL              = http://localhost:3000
 < HTTP_ADDR             = 127.0.0.1
 ---
-> DOMAIN                = home.port111.com
-> ROOT_URL              = http://hangout.home.port111.com:3000
+> DOMAIN                = port111.com
+> ROOT_URL              = http://gaulthub.port111.com:3000
 > HTTP_ADDR             = 0.0.0.0
-45c47
+45c46
 < SSH_DOMAIN            = localhost
 ---
-> SSH_DOMAIN            = hangout.home.port111.com
-49c51
+> SSH_DOMAIN            = gaulthub.port111.com
+49c50
 < APP_DATA_PATH         = /var/lib/gitea/data
 ---
 > APP_DATA_PATH         = /data/gitea/data
+91c92
+< DISABLE_REGISTRATION              = false
+---
+> DISABLE_REGISTRATION              = true
+93c94
+< REQUIRE_SIGNIN_VIEW               = true
+---
+> REQUIRE_SIGNIN_VIEW               = false
+159a161,164
+>
+> [ui.meta]
+> DESCRIPTION = Learn Git and GaultHub without any marketing foo!
     #+end_example
 
 *** Moving default locations
@@ -129,7 +139,6 @@
      + to a whopping huge 16GB, but it could easily be a multi-TB
        device if I ever write that much code :-)
 
-       
 *** Adding an SSH key
     In the UI under settings -> SSH/GPG keys I added a public key I
     intend to use for push pulls
@@ -249,6 +258,57 @@ CNAME
      - May not matter if info is not sensitive and pushed are all done
        with ssh
 
+*** Changing the start page
+    This was harder than it should have been ...
+
+
+    - docs :: https://docs.gitea.io/en-us/customizing-gitea/#customizing-startpage--homepage
+
+    - Find /actual/ custom path :: Log in to UI.  Go to
+      SiteAdmin->Configuration and grab *Custom File Root Path*, in my
+      case =/var/lib/gitea/custom/=.
+
+    - =$ gitea help= was showing incorrect path.   Apparently the
+      startup files installed by the ansible role put it somewhere
+      else and "help" is, apparently not reading the value the same
+      way the UI is.  Not helpful.
+
+#+begin_example
+# List templates from running binary
+$ sudo gitea embedded list "**home**"
+
+# Extract templates
+$ sudo gitea embedded extract "**home**"
+
+# Edit template as desired
+$ cd templates
+$ ed home.tmpl 
+$ ls
+$ ed home.tmpl
+
+ /h2
+				<h2>{{.i18n.Tr "startpage.app_desc"}}</h2>
+d
+a
+                                <h2>Learn Git and GaultHub without any marketing!</h2>
+.
+w
+1623
+q
+
+$ sudo -u gitea cp  home.tmpl /var/lib/gitea/custom/templates
+$ sudo systemctl restart gitea
+$ http get http://hangout:3000 | egrep -i --color foo\|gault\|painless
+$ http get http://hangout:3000 | egrep -i --color foo\|gault\|painless
+	<meta name="description" content="Learn Git and GaultHub without any marketing foo!" />
+	<meta property="og:url" content="http://gaulthub.port111.com:3000/" />
+	<meta property="og:description" content="Learn Git and GaultHub without any marketing foo!">
+                                <h2>Learn Git and GaultHub without any marketing!</h2>
+	<footer>
+</footer>
+#+end_example
+
+
 ** Using gitea
 *** Migrating content
     So migrating repos is fairly painless.  If in the GUI, click, "+",
@@ -258,4 +318,3 @@ CNAME
     along for the ride.   Issues, wikis, PRs, etc. can come if you use
     an access token.
 
-=======
