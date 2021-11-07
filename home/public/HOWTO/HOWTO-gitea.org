@@ -4,7 +4,7 @@
 #+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+options: timestamp:t title:t toc:t todo:t |:t
 #+title: Notes on installing Gitea
-#+date: <2021-11-07 Sun 08:02:42>
+#+date: <2021-11-07 Sun 08:29:37>
 #+author: George M Jones 
 #+email: gmj@pobox.com 
 #+language: en
@@ -314,7 +314,8 @@ $ http get http://hangout:3000 | egrep -i --color foo\|gault\|painless
     So migrating repos is fairly painless.  If in the GUI, click, "+",
     top right, new migration, and fill things in.  I pulled my
     "snippits" repo in from github
-     https://gaulthub.port111.com/gmj/snippits.   All the commits come
-    along for the ride.   Issues, wikis, PRs, etc. can come if you use
-    an access token.
+    +https://gaulthub.port111.com/gmj/snippits+ (re-imported by had as
+    https://gaulthub.port111.com/gmj/home.public.snippits).  All the
+    commits come along for the ride.  Issues, wikis, PRs, etc. can
+    come if you use an access token.
 
