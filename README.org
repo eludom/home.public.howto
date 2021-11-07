@@ -1,0 +1,18 @@
+* What this is
+  This is a list of HOWTOs I've created.
+
+* Why this is here
+  Mostly documenting my own learning process on various tools.
+  Hopefully useful as reference.
+
+* Where are the HOWTO files?
+  The actual HOWTO files live under =home/public/HOWTO/=.
+
+Enjoy.
+
+---George Jones
+  
+  
+  
+
+
