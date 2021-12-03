@@ -4,7 +4,7 @@
 #+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+options: timestamp:t title:t toc:t todo:t |:t
 #+title: Notes on installing Gitea
-#+date: <2021-11-07 Sun 08:29:37>
+#+date: <2021-12-02 Thu 07:13:26>
 #+author: George M Jones 
 #+email: gmj@pobox.com 
 #+language: en
@@ -104,12 +104,12 @@
 < HTTP_ADDR             = 127.0.0.1
 ---
 > DOMAIN                = port111.com
-> ROOT_URL              = http://gaulthub.port111.com:3000
+> ROOT_URL              = http://galthub.port111.com:3000
 > HTTP_ADDR             = 0.0.0.0
 45c46
 < SSH_DOMAIN            = localhost
 ---
-> SSH_DOMAIN            = gaulthub.port111.com
+> SSH_DOMAIN            = galthub.port111.com
 49c50
 < APP_DATA_PATH         = /var/lib/gitea/data
 ---
@@ -125,7 +125,7 @@
 159a161,164
 >
 > [ui.meta]
-> DESCRIPTION = Learn Git and GaultHub without any marketing foo!
+> DESCRIPTION = Learn Git and GaltHub without any marketing foo!
     #+end_example
 
 *** Moving default locations
@@ -290,7 +290,7 @@ $ ed home.tmpl
 				<h2>{{.i18n.Tr "startpage.app_desc"}}</h2>
 d
 a
-                                <h2>Learn Git and GaultHub without any marketing!</h2>
+                                <h2>Learn Git and GaltHub without any marketing!</h2>
 .
 w
 1623
@@ -298,24 +298,51 @@ q
 
 $ sudo -u gitea cp  home.tmpl /var/lib/gitea/custom/templates
 $ sudo systemctl restart gitea
-$ http get http://hangout:3000 | egrep -i --color foo\|gault\|painless
-$ http get http://hangout:3000 | egrep -i --color foo\|gault\|painless
-	<meta name="description" content="Learn Git and GaultHub without any marketing foo!" />
-	<meta property="og:url" content="http://gaulthub.port111.com:3000/" />
-	<meta property="og:description" content="Learn Git and GaultHub without any marketing foo!">
-                                <h2>Learn Git and GaultHub without any marketing!</h2>
+$ http get http://hangout:3000 | egrep -i --color foo\|galt\|painless
+$ http get http://hangout:3000 | egrep -i --color foo\|galt\|painless
+	<meta name="description" content="Learn Git and GaltHub without any marketing foo!" />
+	<meta property="og:url" content="http://galthub.port111.com:3000/" />
+	<meta property="og:description" content="Learn Git and GaltHub without any marketing foo!">
+                                <h2>Learn Git and GaltHub without any marketing!</h2>
 	<footer>
 </footer>
 #+end_example
-
 
 ** Using gitea
 *** Migrating content
     So migrating repos is fairly painless.  If in the GUI, click, "+",
     top right, new migration, and fill things in.  I pulled my
     "snippits" repo in from github
-    +https://gaulthub.port111.com/gmj/snippits+ (re-imported by had as
-    https://gaulthub.port111.com/gmj/home.public.snippits).  All the
+    +https://galthub.port111.com/gmj/snippits+ (re-imported by had as
+    https://galthub.port111.com/gmj/home.public.snippits).  All the
     commits come along for the ride.  Issues, wikis, PRs, etc. can
     come if you use an access token.
 
+** Domain names
+   - new domain :: I registered a new domain, =galthub.com=, for use
+     with the public instance
+   - URL Redirect Records :: I've set up a URL redirect record for
+     =galthub.com= pointing at =http://git.galthub.com=.  Using an
+     unmasked 301 (permanent) redirect. See
+     https://www.namecheap.com/support/knowledgebase/article.aspx/385/2237/how-to-redirect-a-url-for-a-domain/
+** Going Public
+*** [4/4] IN-PROGRESS finalize on galtub.com vs git.galthub.com and fix
+**** DONE Decide on final public URLs
+     - State "DONE"       from "TODO"       [2021-12-02 Thu 05:35]
+      + http - http://git.galthub.com
+      + ssh  - http://git.galthub.com/gmj/home.public.bin.git
+      + "vanity" redirect - http://git.galthub.com
+**** DONE Finalize on type of redirect - 301,302,rewrite
+     - State "DONE"       from              [2021-12-02 Thu 05:36]
+           >>> 301 redirect to git.galthub.com
+**** DONE Fix in gitea.init
+     - State "DONE"       from "TODO"       [2021-12-02 Thu 06:35]
+**** OBE fix in mysocket.io if needed
+     - State "OBE"        from "TODO"       [2021-12-02 Thu 06:35]
+*** TODO change all the remotes in stow to the final galthub.com urls
+    [2021-11-30 Tue 06:54]
+    [[file:~/stow/2021-12-02-changing-roots-to-galthub.com.org::To change roots of home.public* to git.galthub.com]]
+**** On all hsots
+    - laptop (ed) [ ]
+    - pi (hangout) [ ]
+    - others
