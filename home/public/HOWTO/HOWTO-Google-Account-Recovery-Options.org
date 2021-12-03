@@ -1,0 +1,24 @@
+Do the following to make sure you don't loose access to your google account:
+
+* Login
+** TODO click on account (top right)
+*** TODO Go to "Personal Info"
+**** TODO Make sure contact info is up to date
+     - email (including non @gmail.com)
+     - phone number (at least one)
+***** TODO Right click on arrow to the right of email email
+      - make sure you have recovery email and alternate email set up
+***** TODO Right click on arrow to right of phone numbers
+      - Make sure phone numbers are verified
+***** TODO Set up Two step verification
+      This prevents anyone who happens to have or guess your password
+      from logging in (and, e.g., using your email to access bank
+      accounts)
+      
+      - Choose verification methods
+        + test phone numbers
+          o verify
+        + Google prompts
+          o uses your phone
+        + Google Authenticator app
+          o have to install
