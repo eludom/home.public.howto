@@ -4,7 +4,7 @@
 #+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+options: timestamp:t title:t toc:t todo:t |:t
 #+title: Notes on setting up mysocket.io connections to local services
-#+date: <2021-11-06 Sat 09:52:49>
+#+date: <2021-11-14 Sun 05:03:27>
 #+author: George M Jones
 #+email: gmj@pobox.com
 #+language: en
@@ -98,7 +98,7 @@ mysocketctl tunnel connect -s df5ace52-579e-4203-b031-2d279d946539 -t 75b0dd6b-3
 
 # DONE list the tunnels for the socket
 mysocketctl tunnel ls -s df5ace52-579e-4203-b031-2d279d946539
-┌──────────────────────────────────────┬──────────────────────────────────────┬───────────────┬────────────┐
+242da49a-6b6b-4338-a9ce-2f990140fb2a ┌──────────────────────────────────────┬──────────────────────────────────────┬───────────────┬────────────┐
 │ SOCKET ID                            │ TUNNEL ID                            │ TUNNEL SERVER │ RELAY PORT │
 ├──────────────────────────────────────┼──────────────────────────────────────┼───────────────┼────────────┤
 │ df5ace52-579e-4203-b031-2d279d946539 │ 75b0dd6b-3c65-4a6a-9f74-02f289d1a87b │ 35.82.127.46  │       9291 │
@@ -128,3 +128,13 @@ curl https://divine-violet-9569.edge.mysocket.io/
 
 
 
+
+** Learned today 2021-11-13 (some about SSH with mysocket.io, some about gitea)
+   - SSH connections on TCP ports don't work unless you add your
+     public key to the mysocket.io account
+     + I presume this means they are MITM-attacking
+   - I spelled "Galt" wrong consistently as "gault"
+   - the syntax for using alternate ports with GIT is
+     + =git clone ssh://gitea@galthub.port111.com:59110/gmj/home.public.dotfiles.git=
+     + this goes over port 59110 on SSH
+   - You have to use "gitea" as the user the way I've set up the gitea server
