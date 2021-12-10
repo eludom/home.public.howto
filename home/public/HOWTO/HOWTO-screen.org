@@ -1,0 +1,6 @@
+* How to use screen
+  https://www.howtogeek.com/662422/how-to-use-linuxs-screen-command/
+
+  - to start :: "screen [-S session-name]"
+  - to detach :: "^A" d
+  - to reattach "screen -r [session-name]"
