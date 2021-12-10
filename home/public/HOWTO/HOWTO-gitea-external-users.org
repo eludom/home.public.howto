@@ -1,0 +1,55 @@
+
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: HOWTO-gitea-external-users
+#+date: <2021-12-05 Sun 06:55:33>
+#+author: George M Jones
+#+email: gmj@pobox.com
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.0.50 (Org mode 9.4)
+
+Notes-to-self on allowing external users to register and use gitea
+servers, c.a. 2021-12-05
+
+* Goals
+  - Let others use my gitea server
+
+* Plan
+  - Enable auto account registration
+* Concerns/Security
+  - People randomly creating accounts and doing bad things
+    + addressed by =ENABLE_CAPTCHA= (see below)
+    + =REGISTER_EMAIL_CONFIRM= is another option, but would require me
+      t to set up outbound email (may happen in the future)
+
+* Implementation
+
+  Tweak the following in =/etc/gitea/gitea.ini= (or equivalent)
+  
+  #+begin_example
+  ; -> https://docs.gitea.io/en-us/config-cheat-sheet/#service-service
+[service]
+DISABLE_REGISTRATION              = false
+ENABLE_CAPTCHA                    = true
+SHOW_REGISTRATION_BUTTON          = true
+  #+end_example
+
+  
+  #+begin_example sh
+  sudo systemctl restart gitea
+  #+end_example
+  
+* Testing
+** DONE Create test account myself
+** Use Test account
+*** Log in
+*** Clone an existing repo
+*** Make a change
+*** Push change
+*** Issue a PR against the original
+    
