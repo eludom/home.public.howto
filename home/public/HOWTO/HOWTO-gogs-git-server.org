@@ -1,0 +1,122 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: HOWTO: gogs git server
+#+date: <2022-11-06 Sun 15:39:10>
+#+author: George M Jones
+#+email: gmj@pobox.com
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.2 (Org mode 9.5.5)
+#+cite_export:
+
+* What
+I've recently set up a [[https://gogs.io/][gogs]] git server on a Digital Ocean droplet to
+host my misc source code (mostly emacs configs, bash setup, code
+snippits, HOWTO  articles like this, etc.)
+
+* Why
+  I had been [[http://git.galthub.com:3000/gmj/home.public.howto/src/master/home/public/HOWTO/HOWTO-mysocket.org][self-hosting gitea on a raspberry pi using mysocket.io]] for
+  networking and CDN, but it was a lot of work and I didn't bring it
+  back after a power failure took it out.
+
+ And as I was about to go online with another gitea server, there was [[https://pad.gusted.xyz/s/PoIQp8OfL][some
+drama with the gitea project]], [[https://blog.gitea.io/2022/10/open-source-sustainment-and-the-future-of-gitea/][a
+new company]], another fork. I decided to let the dust settle and simply
+try gogs, the predecessor of gitea for now. After previous work with Gitea
+(my [[http://git.galthub.com:3000/gmj/home.public.howto/src/master/home/public/HOWTO/HOWTO-gitea.org][gitea howto is here]]), it seems pretty intuitive.
+
+* Research it/what is it?
+
+  Some [[https://fosstodon.org/@eludom/109234191046151653][discussion of git alternatives on Mastadon]] lead to gogs https://gogs.io/
+
+* Where to run it?
+  - Digital Ocean :: In my case, I'm going to just run it on a digital
+    ocean droplet.   My previous gitea instance was run on a raspberry
+    pie using mysocket.io for networking.   This time around, I'm just
+    going to let someone else worry about layers 0 to four
+    (data center ops, keeping the machine up, networking).  $6/month.
+
+* Installation
+
+  - See instructions here :: instructions here https://gogs.io/docs/installation
+    + No database install :: I'm defaulting to not installing a
+      database, which means (I think), I'm using SQLite.
+
+* Running
+#+begin_example sh
+# Run it
+./gogs web
+#+end_example
+
+* Initial Setup
+
+  Then go to http://localhost:3000/install and follow instructions
+
+* Firewall Rules
+
+  I'm using the Digital Ocean firewall for the droplet. For the moment:
+
+  - TCP/3000 :: Open to the world (Web UI, Login)
+  - TCP/2222 :: Open to the world (built in SSH server)
+  - TCP/22 :: Only open to my home network
+
+* Starting on boot
+
+#+begin_example
+  # enable the service
+  ## go where you unpacked it, then
+  cd ~git/etc
+
+  # enable it, and start now
+  sudo systemctl enable $PWD/gogs.service --now
+
+  # see if it's running
+  sudo systemctl status gogs
+
+  # See if you can get a response from the UI
+  curl localhost:3000
+
+  # Make sure it starts, then maybe reboot to prove it.
+  sudo systemctl status restart
+#+end_example
+
+* API
+  I have a lot of repos I want to push up.  Creating them  in the UI
+  is tedious, so...
+
+  git clone https://github.com/grogorick/gogs-cli.git
+
+  - Create an API token
+
+  https://YOUR.GOGS.SERVER/user/settings/applications
+
+  - Set environment variables
+
+  - Create a repo form the command line
+
+  #+begin_example
+  export GOGS_API_TOKEN=xxx
+  export GOGS_SERVER_URL=http://git.galthub.com:3000
+  chmod +x gogs
+  ./gogs list-user-repos gmj
+  ./gogs create-user-repo gmj home.public.howto "A collection of HOWTOs, public notes to self" false
+  #+end_example
+
+* Unknown, TODOs and Questions
+
+  This is a work in progress.  There are a lot of loose ends.
+
+  - leave on port 3000 :: Is there any good reason to move off port 3000? 80/443?
+  - SSL Certs :: Should I install SSL Certs (to enable https://) ?
+    Self signed?   Lets' Encrypt?  Reverse proxy with nginx? Front end with cloudflare?
+  - Strangeness with ssh :: I can clone/push with SSH, but only via
+    the native OpenSSH server on port 22.  The built-in server on 2222
+    complains aobut the certificate.
+  - Create custome config ::
+    https://gogs.io/docs/installation/configuration_and_run
+    Mabye use this to change ports, enable/disable native SSH server,
+  - Customize templates, etc :: https://gogs.io/docs/features/custom_template
