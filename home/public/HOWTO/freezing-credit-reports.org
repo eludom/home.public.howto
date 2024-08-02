@@ -1,0 +1,121 @@
+* Credit Bureau Hygene
+
+** What
+
+I recently went through the exercise of freezing all my credit reports.
+This is one step in the process of avoiding scams. For a general article
+on freezing credit reports, see: https://www.nerdwallet.com/article/finance/how-to-freeze-credit
+
+** My step-by-step instructions
+*** TODO [0/3] (Re)create/login to accounts at 3 credit bureaus
+**** TODO Transunion
+**** TODO Experian
+**** TODO Equifax
+*** TODO [0/3] Freeze (free) NOT LOCK ($) my credit reports
+    - Note taken on [2024-08-02 Fri 08:01] \\
+      You have to log into the services directly to set freeze and alerts
+**** TODO Transunion
+**** TODO Experian
+     - Note taken on [2024-08-02 Fri 07:36] \\
+       They REALLY hide the freeze options.  You have to
+       go to
+          Help Center -> Quick Actions -> Manage Freeze
+       They want to sell their deceptively similarly named "lock"
+**** TODO Equifax
+
+*** TODO [0/3] Set Fraud Alerts (lenders must call you first)
+**** TODO Transunion
+**** TODO Experian
+**** TODO Equifax
+*** TODO [0/3] Pull my my credit reports
+    - Note taken on [2024-08-02 Fri 07:59] \\
+      https://www.annualcreditreport.com/ let's you pull
+      weekly, but it's buggy.  See below.  Logging in to individual credit union accounts appears
+      to be limited to 6 to 12 a year.
+**** TODO Transunion
+**** TODO Experian
+**** TODO Equifax
+     - Note taken on [2024-08-02 Fri 07:39] \\
+       Only way I found to get a single PDF with experian credit report was
+       to log into https://www.annualcreditreport.com/
+*** TODO [0/3] Examine credit reports for anything strange
+**** TODO Transunion
+**** TODO Experian
+**** TODO Equifax
+*** TODO [0/3] Set passwords
+**** TODO Transunion
+**** TODO Experian
+**** TODO Equifax
+*** TODO [2/3] Set up 2FA where supported
+    - Note taken on [2024-08-02 Fri 08:03] \\
+      Only one of the three big credit bureaus lets you set up 2FA, and then
+      only a text message, no tokens or apps.  "At [big credit bureau] we
+      take your monetization^h^h^h^h^h^h^h^h^h^h^h^h security seriously."
+**** CANCELED Transunion
+       - No 2FA options
+**** TODO Experian
+**** CANCELED Eqifax
+       - No 2FA options
+
+** Color commentary ... the credit bureaus make it hard, on purpose.
+
+   Security and Privacy of your data not a priority for the credit
+   bureaus
+*** They had to be forced to let you monitor your own data
+
+    The credit bureaus collect data on you without your consent,
+    largely for the purpose of selling it, again without your consent (or reimbursement.)
+    They had to be forced by legislation to let you have free access to
+    your own data:
+
+    https://en.wikipedia.org/wiki/AnnualCreditReport.com
+
+*** Experian lost all it's data (YOUR data) 10 years ago
+
+    Paranoid about sharing your social security number?  That pales in
+    comparison to the 2015 breach of Experian:
+
+    #+begin_quote
+    ...During the time that ID theft service was in operation, customers [of
+    the hacker's] service had access to more than 200 million consumer records.
+    Experian didn’t detect [the] activity until it was notified by federal
+    investigators...
+
+    https://krebsonsecurity.com/2015/10/experian-breach-affects-15-million-consumers/
+
+    #+end_quote
+
+
+*** Experian has been negligent in responding to reported security issues for 9 years
+
+    Nine years later, they were still leaking peoples data ...
+
+    https://infosec.exchange/@briankrebs/111383547431806668
+
+*** Freezing (vs locking) your credit report is made not obvious
+
+    The credit bureaus are required to let you freeze your credit
+    to make it harder for someone to open fraudulent credit in your
+    name.  When you create an Experian account, your are asked to
+    upgrade (pay for) your account, to sign up for their account "lock"
+    service (which costs), etc.   I had to spend 10 minutes searching
+    on the site for the menu that let's me freeze/verify I have frozen
+    my account (You have to go to "Help Center -> Quick Actions ->
+    Manage Freeze" ... of course that might change)
+
+    And on it goes.
+
+*** Similar motiviations, buggy user interfaces
+    I could not see a way on the equifax site to simply save my whole
+    report in a single PDF, so I went to AnnualCreditReport.com and was
+    able to do (why did they make it hard to do on their site?).  When
+    I got there and clicked "show me all 3 reports", one reported
+    "technical trouble" generating the reoprt ("who could ever question
+    'technical trouble' ?"), and when I got to the transunion report,
+    it would NOT let me navigate back to the menu bar to hit the
+    back-arrow without me inputting an email address and consenting to
+    being sent marketing updates.  I gave them a bogus address.  There
+    was still no way to natigate back or get to the next report.   They
+    do not have incentive to make this site work well for consumers.
+
+    Good luck.
