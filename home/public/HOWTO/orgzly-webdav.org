@@ -1,0 +1,37 @@
+* What
+These are notes on how I used webdav to sync org notebooks
+from orgzly (not Orgzly revived) on my android to my linux
+laptop.   This was done on a manjaro linux laptop.
+
+* Why?
+I was using orgzly to take a series of notes while
+sometimes disconnected.   The old dropbox interface seems
+to be non-functional (API changes, bitrot?).  A couple
+attempts at using MTP and ssh (servers on android) did not
+succeed.
+
+* How
+** Install rclone
+   =sudo pacman -S rclone=
+** Stop anything else listening on :8080
+   =sudo lsof -i | grep LISTEN | grep http-alt=
+   =kill -9 [PID]
+** Make a directory for webdav files
+   =mkdir ~/webdav=
+** Start rclone
+   =rclone --addr :8080 serve webdav ~/webdav=
+** Configure sync repositories in orgzly
+   - Delete other sync repositories
+   - Add a new one, with something like:
+     + URL: =webdav://192.168.0.2:8080/webdav3=
+     + username: a username that can log in
+     + password: the password
+** Test connection
+  - test the connection.  If thing are going well you
+    should see a directory like "~/webdav/webdav3" created
+** Sync everything
+  - in orgzly, to go top right, hit the "..." dropdown, select
+    "sync"
+  - you should see your org files in ~/webdav/webdav3/*.org
+        
+
