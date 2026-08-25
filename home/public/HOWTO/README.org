@@ -1,36 +1,9 @@
-* What this is
-  This is a list of HOWTOs I've created.
+* What's here?
 
-* Why this is here
-  Mostly documenting my own learning process on various tools.
-  Hopefully useful as reference.
+- One is a "Try this at home" kids list of things that you/I can do today that were not possible recently.
+  Most of them are either AI things I've done or come across.  Most have links.  I've tried many of them myself.
+  Have fun.   See the [[file:./trythis/TryThis.org]] and it's HTML cousin.
 
-* Github's treatment of .org files
-  Github has /partial/ support for .org files.
-  https://github.com/novoid/github-orgmode-tests/blob/master/README.org
-
-  This means that .org files I put here will be partially formatted,
-  some parts correctly, some parts incorrectly.
-
-  As far as I know, there is no way, short of renaming .org files .txt
-  to keep github from doing it's partial formatting of org files,
-  so when they display you will not see what I intended.
-
-  I've included .pdf files which show things as intended.
-  
-  I've also included .html versions, which generally look pretty good,
-  but (at least in my browser) you have to download them and then
-  open them.
-
-  Thankfully, when you download the repository you get the .org
-  files as I uploaded them and then, if you're using org mode,
-  you can pull them in, work with them, execute the examples, etc.
-
-Enjoy.
-
----George Jones
-  
-  
-  
+- Two is  a list of HOWTO files that I created.  I don't think I need to write these any more.     These were here mostly to document my own learning process on various tools.
 
 

@@ -1,4 +1,3 @@
-#+TITLE: The Future Is Now: Try This At Home, Kids
 #+SUBTITLE: Things you can do today
 #+TODO: NEW(n) | WORKS(w) LIKED(l) SKIP(s) ARCHIVED(a)
 #+SELECT_TAGS: export
