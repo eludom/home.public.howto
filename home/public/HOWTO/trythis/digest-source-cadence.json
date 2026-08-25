@@ -1,0 +1,23 @@
+{
+  "_comment": "Operational state for the 'Try This At Home, Kids' digest scheduled task. Not meant for manual reading like story-log.org, but safe to hand-edit (e.g. null out a last_checked to force an early re-check of a low-frequency source).",
+  "cadence_days": {
+    "hacker_news": 1,
+    "marginal_revolution": 1,
+    "hackaday": 1,
+    "simon_willison": 1,
+    "current_blog": 1,
+    "emacs_news": 7,
+    "usenix_proceedings": 30,
+    "old_blog": 30
+  },
+  "sources": {
+    "hacker_news": {"url": "https://news.ycombinator.com/", "last_checked": "2026-08-25"},
+    "marginal_revolution": {"url": "https://marginalrevolution.com/", "last_checked": "2026-08-25"},
+    "hackaday": {"url": "https://hackaday.com/", "last_checked": "2026-08-25"},
+    "simon_willison": {"url": "https://simonwillison.net/", "last_checked": "2026-08-25"},
+    "current_blog": {"url": "https://curious.port111.com/archive/", "last_checked": "2026-08-25", "note": "George's own current blog. Self-authored posts get a very low bar for inclusion: if he did it himself and it wasn't easy/possible 1/3/5 years ago, it's IN almost by default. Full historical archive (2020-2026, 200+ posts) backfilled into story-log.org on 2026-08-25 with the clear capability-threshold matches; most posts are trail/photo/book-review content that doesn't fit the digest and was deliberately left out."},
+    "emacs_news": {"url": "https://sachachua.com/topic/emacs-news/", "last_checked": "2026-08-25"},
+    "usenix_proceedings": {"url": "https://www.usenix.org/publications/proceedings", "last_checked": "2026-08-25"},
+    "old_blog": {"url": "http://curious.galthub.com/", "last_checked": "2026-08-25", "note": "George's old, mostly-inactive blog. Same monthly cadence as Usenix. Self-authored posts get the same low bar as current_blog. Checked 2026-08-25: site structure resists clean crawling (pagination-only listing, robots-disallowed on most sub-paths), and the dated posts found appear to pre-date his migration to the current blog and duplicate content already there (e.g. 2023-12-22 and 2024-03-02 posts exist on both). No genuinely new capability-threshold material found. Revisit manually if George flags something specific from this blog."}
+  }
+}

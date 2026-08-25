@@ -1,0 +1,207 @@
+#+TITLE: The Future Is Now: Try This At Home, Kids
+#+SUBTITLE: Things you can do today
+#+TODO: NEW(n) | WORKS(w) LIKED(l) SKIP(s) ARCHIVED(a)
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#
+# Some stuff to make  HTML export work well
+#
+#+OPTIONS: author:t date:t email:t
+#+OPTIONS: html-postamble:nil toc:nil  num:nil tags:nil
+# #+latex_class: report
+# #+latex_class_options: [titlepage]
+
+# Macro to set title option as required per backend
+ 
+#+MACRO: conditional-title (eval (if (org-export-derived-backend-p org-export-current-backend 'latex) "#+OPTIONS: title:t" "#+OPTIONS: title:nil"))
+{{{conditional-title}}}
+
+
+# Custom states:
+#   NEW      — story appeared in a digest, not yet reviewed
+#   WORKS    — I tried this.  It works.  Definatly want more like this.  Very high positive signal.
+#   LIKED    — flag stories you want more like this
+#   SKIP     — actively not interested — as useful a signal as LIKED
+#   ARCHIVED — reviewed and filed away, no signal either way
+
+# How this file is meant to work:
+#   1. Daily task appends each digest story below as a NEW headline under that day's date.
+#   2. You change C-c C-t (or M-x org-todo) to mark WORKS / LIKED / SKIP on stories that struck you.
+#   3. The task reads this file each run: WORKS and LIKED headlines + their tags indicate
+#      what to lean toward (WORKS being the stronger signal), SKIP indicates what to
+#      filter out. Old NEW entries can be swept to ARCHIVED periodically so the file
+#      doesn't just grow forever.
+
+# Per-story format (the DELTA line is mandatory — it IS the point of the digest):
+#   *** NEW <headline>                                          :tag1:tag2:
+#       Publication — one line on who did it and what it is.
+#       DELTA: what this would have taken 1 / 3 / 5 years ago (cost, expertise, institution, or "impossible").
+#       https://url
+#
+# Tag vocabulary: :newlyPossible: :aiEnabled: :cheapHw: :openModels: :amateurBeatsPro:
+#                 :diy: :workaround: :trend: :nearterm: :academic: :agency:
+
+
+* Preferences (running summary — edit directly, or let the task propose updates here)
+- Core question :: "What can one person do now, at home, that they could NOT do 1 / 3 / 5 years ago?"
+  
+- Lean toward :: capabilities newly in reach of an individual (always state the before/after delta),practical try-this-yourself things,AI as the ENABLER of a person's project,cheap hardware crossing a price/capability threshold,open models/data/tools replacing a paid gatekeeper or institution,amateurs doing what used to need a lab or a pro team,near-term trends (0-6 months out),academic results that just became reproducible at home,agency,creativity,resourcefulness,education,outdoors,contrary-takes,emacs,economics,retirement,privacy-enabling tools and personal-privacy technology
+
+- Less interested in :: AI as the SUBJECT (model releases,benchmark scores,lab drama,capability discourse,"AI will change everything" takes),vendor/product announcements where nobody actually did the thing,press releases and marketing copy,intro/promotional offers (free trial,sign-up-now,discount-code framing),pure nostalgia or metro revival with no new capability,repair-for-its-own-sake unless it demonstrates something newly possible,heavy clinical/medical research (implants,trials,hospital devices),politics,environment,offensive security / exploit-dev / red-teaming for its own sake (defensive security and privacy-enabling tech are still IN -- this is specifically about the offensive-security subculture, which reads as more interested in "I know something you don't" one-upmanship than in building things useful to others)
+
+- Note on AI :: AI is welcome and expected — as the tool in someone's hands, not as the protagonist. "A person did X because a model now makes X possible at home" is IN. "A model scored Y" is OUT. Hosted/commercial models (Claude, GPT, etc. via API or subscription) count exactly the same as self-hosted/local models — the point is what the person did, not where the compute ran.
+
+- Evidence bar :: prefer someone who actually DID it and wrote it up over a vendor claiming it is possible. Hard exclude: press releases, product-launch posts, marketing copy, and anything centered on an intro/promotional offer.
+
+- Sources to check :: Hacker News front page (news.ycombinator.com),Marginal Revolution daily/assorted links (marginalrevolution.com),Hackaday (hackaday.com),Simon Willison (simonwillison.net), The latest Emacs News https://sachachua.com/topic/emacs-news/, recent Usenix Papers (https://www.usenix.org/publications/proceedings)
+
+
+* Abstract                                                           :export:
+
+The list of things that you can do yourself is growing rapidly.  This shows some amazing (to me) things I've been able to do in the past few years and a growing list of things others have shown how to do (some of which I've tried).  We're living in amazing times.   Most come with links.  Go try some of this stuff.
+
+Each entry names one thing a person actually built, tried, or shipped — and states plainly what it would have cost in money, expertise, or institutional access one, three, or five years ago. AI shows up in most of these, but always as the tool in someone's hands, never as the headline: a model release isn't a story here, what someone did with one is. Vendor claims and press releases don't make the cut either — only things someone verifiably did and wrote up.
+
+A few of my favorites (so far):
+
+ - Generate Mark Twain quips on cryptocurrency and create a poem about Pete Rose ... in Latin ?!?!
+ - A free public MuScriptor instance turns any song into multi-instrument MIDI and scores it
+ - Using ChatGPT as a voice-preserving editor, not a ghostwriter
+ - Air Theremin: a browser theremin you play by waving at your webcam
+
+ See the current (growing) list below:
+ 
+ #+TOC: headlines 3  
+
+* Digest Log
+** 2022-12-10
+*** WORKS Ten days after launch, ChatGPT writes a Latin poem about Pete Rose on request :aiEnabled:newlyPossible:export:
+    curious.galthub.com (George's old blog) — ten days after ChatGPT's Nov 30 2022 public launch, George put it through its paces: a fabricated-but-plausible Mark Twain quote about cryptocurrency, a bash regex-search script, an English poem about Pete Rose, and then — for the fun of it — the same poem again in Latin ("Pete Rose, ludus magnus, / non comparari potest...").
+    DELTA: getting a competent occasional poem, in a dead language, on a whimsical prompt, in under a minute used to mean actually knowing Latin or finding a classicist friend willing to indulge you; ten days after ChatGPT's public release, anyone could just ask. (Same throughline that later has him conversing with Claude in Latin to practice Swedish, see 2026-04-11 below.)
+    http://curious.galthub.com/blog/2022-12-10/
+** 2024-09-05
+*** WORKS Clipea: a command-line AI buddy that turns plain English into shell commands :aiEnabled:workaround:export:
+    curious.port111.com (George's own blog) — George tried Clipea, an open-source CLI tool that takes a natural-language request ("how do I install emacs from source") and proposes the actual shell command, with an Execute? confirmation before running it.
+    DELTA: turning a plain-English request into a correct, ready-to-run shell command used to mean already knowing the command or digging through man pages and Stack Overflow; now a small open-source tool does the translation locally, right at the prompt.
+    https://curious.port111.com/2024/09/05/clipea-your-ai.html
+** 2024-10-11
+*** WORKS ChatGPT fixes a stubborn Org-mode habit-tracking quirk in one exchange :aiEnabled:workaround:export:
+    curious.port111.com (George's own blog) — George asked ChatGPT why completed Org-mode habits kept disappearing from his agenda and got a one-line working fix (`(setq org-habit-show-all-today t)`) back immediately.
+    DELTA: chasing down an obscure single-variable Emacs configuration fix like this used to mean a mailing-list search or trawling old forum threads; now it's a direct question-and-answer away.
+    https://curious.port111.com/2024/10/11/for-better-or.html
+** 2025-03-27
+*** WORKS Using ChatGPT as a voice-preserving editor, not a ghostwriter :aiEnabled:workaround:export:
+    curious.port111.com (George's own blog) — George described his actual writing workflow: drafting a trail-maintenance article himself, then using ChatGPT as a proofreader and cross-draft consistency checker, hand-editing its suggestions back in rather than accepting AI prose wholesale, specifically to keep his own voice.
+    DELTA: getting substantive, on-demand editorial feedback (tone, clarity, consistency against an earlier draft) used to mean a human editor or a writing group; now it's a free, instant pass before every draft, with the writer still doing the actual writing.
+    https://curious.port111.com/2025/03/27/how-i-use-ai-to.html
+** 2025-10-09
+*** WORKS Beating an insurance company's phone maze by OCR'ing his own policy PDF and asking ChatGPT :aiEnabled:workaround:export:
+    curious.port111.com (George's own blog) — after three unanswered calls to his agent and a broken transfer promise, George downloaded his own policy PDF, discovered it was encoded against text extraction, got OCR working locally, then fed the extracted text to ChatGPT and had a sourced answer in about 30 seconds — plus a full side-by-side comparison against a competing policy.
+    DELTA: getting a definitive, cited answer to a specific coverage question — instead of three dropped calls and a broken callback promise — used to mean finding a friend in the industry willing to read your policy for you; now it's an evening with a phone-scanned PDF, a local OCR tool, and a chat window. (His own closing line, "Caveat quaesitor" — let the questioner beware — is the honest caveat: verify what the AI tells you.)
+    https://curious.port111.com/2025/10/09/the-path-to-a-world.html
+** 2026-01-19
+*** WORKS Feeding a year of credit-card statements to Claude Code to find subscriptions worth cancelling :aiEnabled:agency:export:
+    unpublished — George installed Claude Code, fed it his own bash scripts for cleanup with no trouble, then installed a third-party "just-fucking-cancel" Claude skill and fed it CSV exports of his own credit-card transactions (no credentials) to find recurring charges worth cancelling. It worked well enough that he also cancelled his separate paid ChatGPT subscription, since he mostly uses OpenAI via API through gptel anyway.
+    DELTA: auditing a year of statements for forgettable recurring subscriptions used to mean doing it by hand or paying for a subscription-tracking service (Rocket Money, Trim, etc.) that itself wants your financial data; now a local agentic coding tool, pointed at your own exported CSVs, does the same audit for the cost of a monthly AI subscription he was probably already paying for anyway.
+    unpublished
+** 2026-04-11
+*** WORKS Conversing with Claude in Latin, to practice Swedish :aiEnabled:newlyPossible:export:
+    curious.port111.com (George's own blog) — George discovered he can hold real conversations with Claude in Latin, and is using it as a bridge to practice Swedish ("Mira enim est!").
+    DELTA: an on-demand, fluent conversation partner in a dead language who can also pivot into helping with a third, living language you're learning used to require a specialist classicist willing to indulge you; now it's a chat window.
+    https://curious.port111.com/2026/04/11/i-can-converse-with-claude.html
+** 2026-08-17
+*** NEW Example: story headline goes here                             :tag1:tag2:
+    Source, one-line why it's here.
+** 2026-08-20
+*** SKIP Unlocking a locked/deactivated e-waste Cricut Maker :repair:agency:
+    sprocketfox.io — rescued a bricked-by-vendor cutter from e-waste; hardware serial-spoof beats remote DRM.
+    https://sprocketfox.io/xssfox/2026/07/01/cricut-unlock/
+*** LIKED Quick Share implemented on a Kindle :workaround:diy:export:
+    Hackaday — a hobbyist's KOReader plugin routes files onto a jailbroken Kindle, around Amazon's sideloading.
+    https://hackaday.com/2026/08/19/quick-share-implemented-on-a-kindle/
+*** SKIP os8088: a handmade Macintosh-style GUI OS for the 8086/8088 :diy:agency:
+    os8088.com — one person's from-scratch OS boots on a 1981 IBM 5150 and does what the 1984 Mac couldn't.
+    https://os8088.com/
+*** LIKED Geolocating a random island using geometry and CUDA :diy:workaround:export:
+    yassa9.github.io — solo OSINT puzzle cracked with hand-rolled coastline-matching, not an AI black box.
+    https://yassa9.github.io/osint/gralhix-004/
+*** WORKS Air Theremin: a browser theremin you play by waving at your webcam :diy:agency:export:
+    theremin.bizibah.com — Pavel Gurov turned a laptop camera into a gestural instrument, no hardware.
+    https://theremin.bizibah.com/
+** 2026-08-21
+*** LIKED RollTab: a 125M-parameter on-device piano autocomplete trained from scratch :aiEnabled:diy:export:
+    simedw.com — Simon Edwardsson designed a novel MIDI tokenization scheme and trained 33M/64M/125M transformers from scratch on public-domain MIDI, shipping the 125M model as an iOS app that autocompletes live piano playing in real time, fully on-device.
+    DELTA: coherent generative-music modeling was lab/company territory (Google Magenta, OpenAI MuseNet) needing large compute clusters as recently as 3-5 years ago; now one hobbyist trains it himself and runs it at 108 notes/sec on an iPhone 15.
+    https://simedw.com/2026/08/20/midi-autocomplete/
+*** SKIP Reverse-engineering AliExpress's silent Bluetooth-breaking fingerprint script :workaround:aiEnabled:
+    blog.laserphile.com — m-c-tech diagnosed why loading AliExpress killed Bluetooth multipoint audio switching by instrumenting the Web Audio API themselves, then used AI to help decode two heavily obfuscated Alibaba anti-fraud scripts hiding a silent audio fingerprinting probe.
+    DELTA: unpicking obfuscated third-party fingerprinting JavaScript used to be professional security-researcher work measured in days; now a curious individual pairs browser instrumentation with AI-assisted deobfuscation to fully diagnose it in an evening and ship a working uBlock filter.
+    https://blog.laserphile.com/2026/08/aliexpress-webpage-keeping-multipoint.html
+*** LIKED A 150-line, dependency-free browser-automation JSON API built with Bun and Claude :aiEnabled:newlyPossible:export:
+    simonwillison.net — Simon Willison paired with Claude Code to build a zero-dependency TypeScript service exposing JS-eval and screenshot endpoints against a live browser tab, using Bun 1.4's new WebView API instead of a browser-automation library.
+    DELTA: this kind of programmatic browser control used to mean standing up Puppeteer or Playwright plus their heavyweight dependency chain; now it is ~150 lines of TypeScript with zero external browser-automation dependencies, written in an afternoon with an AI pair programmer.
+    https://simonwillison.net/2026/Aug/20/bun-webview-json-api/
+** 2026-08-22
+*** SKIP Cobalt: a signed app store and SDK that turns a Kobo e-reader into an app platform :workaround:diy:
+    Hacker News (Show HN) — BandarLabs (posting as thepoet) built a launcher, signed app store, Rust SDK, and capability-isolated runtime that installs third-party apps on a Kobo e-reader over Wi-Fi after one USB setup, fully reversible back to stock.
+    DELTA: running your own software on a Kobo used to mean a full firmware jailbreak or living inside whatever the existing Nickel-plugin ecosystem (NickelMenu) allowed; now it's a signed app store with an install button — today's build covers one device (Clara BW), but the SDK itself is open.
+    https://bandarlabs.github.io/Cobalt/
+*** SKIP A $100ish PVC-pipe telescope with a Raspberry Pi camera and a phone screen :cheapHw:diy:
+    Hackaday — a builder going by Makestreme combined a 114mm mirror, a length of 5-inch PVC pipe, a Raspberry Pi Zero 2W with Camera Module 3, and 3D-printed mounts into a live-imaging telescope controlled from a phone via SkyMap/SkEye.
+    DELTA: a telescope with real digital imaging (not just an eyepiece) used to mean a $300-500+ commercial scope plus a separate astrocamera; this rig gets there with a cheap mirror, some plumbing, and a ~$15 Pi camera module.
+    https://hackaday.com/2026/08/21/pvc-pipe-turned-diy-digital-telescope/
+*** WORKS Kiwix: download all of Wikipedia (or StackExchange) as a single offline file :openModels:agency:export:
+    Hackaday, covering the Kiwix/Zimit project — pre-built .zim archives of Wikipedia, StackExchange, and other major sites, ready to host offline on a laptop, phone, or Raspberry Pi with no server or account needed.
+    DELTA: honest delta here is modest — Kiwix itself isn't new — but crawling and packaging a site like Wikipedia yourself used to be a months-long job on consumer hardware; that work is now done for you and the archive is a free download.
+    https://hackaday.com/2026/08/21/self-hosting-offline-websites/
+*** SKIP An AI coding agent turns a throwaway CLI into a native Mac app you'll actually keep :aiEnabled:newlyPossible:
+    simonwillison.net, discussing Thomas Ptacek — Willison backs the case for building small native GUI tools instead of CLIs, citing his own SwiftUI bandwidth and GPU monitor apps, built with an AI coding agent in March 2026, that he still runs daily.
+    DELTA: turning a personal script into a native macOS menu-bar app used to require learning Swift/Xcode or paying someone who already knew it, a bar high enough that most personal tools just stayed scripts; an AI pair programmer now makes that a same-day project for a non-Mac-developer.
+    https://simonwillison.net/2026/Aug/21/stop-making-tuis/
+** 2026-08-23
+*** SKIP A printable, variable-speed shutter for a 3D printed film camera :diy:cheapHw:
+    Hackaday — a builder going by Camera Things designed a rubber-band-tensioned sliding shutter for a 3D printed film camera, letting the blind be partially retracted to dial in exposure like a shutter-speed control.
+    DELTA: a precision variable shutter like this used to mean hand-cutting cardboard and tape or having an aluminum billet machined by a pro shop; now it's a home FDM print job (this half-frame version was later abandoned for a more complex vertical-leaf design, but the printability itself is the point).
+    https://hackaday.com/2026/08/22/the-shutter-makes-this-3d-printed-camera-special/
+*** SKIP Rust Glancer: a solo, LLM-assisted Rust language server using 100x less RAM than rust-analyzer :aiEnabled:amateurBeatsPro:
+    Hacker News, via popzxc's blog — solo developer popzxc spent about four months, with heavy use of LLMs as a coding partner, building an alternative to the official rust-analyzer LSP that indexes projects from disk instead of keeping everything in RAM.
+    DELTA: the official tool was eating up to 16GB of RAM across a couple of open IDE windows on the author's own machine; matching or beating a well-staffed official dev-tools project solo used to mean months of unpaid nights, now an AI pair programmer makes it a credible four-month side project holding under 100MB.
+    https://rust-glancer.github.io/blog/hello-world/
+*** LIKED 45 minutes with Claude fixes a 10-year-old Windows sound bug :aiEnabled:newlyPossible:export:
+    How-To Geek — Nick Lewis, a former freelance Python/C++ programmer, used Claude to build StereoTray, a taskbar toggle app fixing his sound card's habit of resetting from stereo to 5.1 surround on every reboot.
+    DELTA: he notes a small custom utility like this used to take days or weeks of dev time even for someone with his programming background; this one took about 40 minutes of AI research-and-coding time end to end.
+    https://www.howtogeek.com/vibe-coded-app-claude-fix-one-windows-annoyances/
+*** SKIP An individually-designed ExpressLRS receiver holds 5km+ through forest on one watt :cheapHw:diy:
+    Hackaday — a designer going by Stan built and open-sourced four ESP32/SX1281-based ExpressLRS receiver variants for long-range drone control, all holding a stable link past 5 kilometers through forest cover.
+    DELTA: ExpressLRS has been maturing as a free, open alternative to pricier commercial long-range RC systems since around 2019-2021; what's newly routine is an individual designing and validating his own receiver hardware from scratch to match that range, rather than just buying a finished module.
+    https://hackaday.com/2026/08/22/open-source-expresslrs-receiver-reaches-for-range/
+** 2026-08-24
+*** SKIP Making LEDs in the home fab :cheapHw:amateurBeatsPro: 
+    Hackaday, covering Dr. Semiconductor's guide — a hobbyist fabricated working blue and white GaN LEDs at home, laser-etching, sputtering contacts onto, dicing, and indium-bump-bonding a commercial epiwafer into finished packaged chips.
+    DELTA: growing the GaN crystal itself is still an industrial MOCVD job, but the chip-fab steps after that — lithography-free laser patterning, metal contacts, dicing, packaging — used to mean university cleanroom access; now they run on a ~$160 commercial epiwafer, a consumer Chinese UV laser marker, and a benchtop sputter coater on a home bench.
+    https://hackaday.com/2026/08/23/making-leds-in-the-home-fab/
+*** WORKS A free public MuScriptor instance turns any song into multi-instrument MIDI :openModels:aiEnabled:export:
+    Hacker News (Show HN), pianoify.net by a solo developer (jardy / jerryzhou196) — wraps Kyutai and Mirelo's openly released MuScriptor model in a free page: drop in an audio file or YouTube link and get back accurate, multi-instrument MIDI, code on GitHub.
+    DELTA: full-mix, multi-instrument audio-to-MIDI transcription used to mean a paid subscription service like Chordify with mediocre accuracy, or hours of transcribing by ear; now it's a free page sitting on top of an openly released model, with the code and weights available to self-host.
+    https://www.pianoify.net/
+*** ARCHIVED Figmimic: a bookmarklet that copies any webpage into Figma as editable layers :workaround:diy:
+    Hacker News, from Adam Marcus's blog (blog.marcua.net) — a solo developer's bookmarklet grabs a live webpage's DOM and drops it into Figma as fully editable, nested layers instead of a flat screenshot.
+    DELTA: updating a shipped UI in Figma used to mean pasting a screenshot and manually redrawing vector shapes on top of the static image, or paying for a plugin like html.to.design; now it's a free ~400KB bookmarklet built on Figma's own capture library, no install or account needed.
+    https://marcua.net/minitools/figmimic/
+** 2026-08-25
+*** SKIP A self-described "prompt kiddie" roots a bricked Fire HD tablet by steering four AI models :aiEnabled:newlyPossible:
+    ericpardee.github.io — Eric Pardee spent five months and $266 in API costs routing an unpatched Android privilege-escalation bug (CVE-2022-38181) through Claude, Kimi K3, and GLM-5.2/5.3 until GLM-5.3 produced a working root exploit in a single day; he says his own contribution was steering the models, not the exploit-dev work itself.
+    DELTA: honest delta here is about who can do the work, not the vulnerability itself — the CVE was already known and unpatched. Building a working exploit chain from a known-but-unpatched bug used to require real exploit-development skill (assembly, memory layout, patience with a debugger); a self-described non-expert now assembles one end to end by persistently directing general and specialized coding models, no reverse-engineering training required.
+    https://ericpardee.github.io/fire-hd-ownership/
+*** SKIP A 27B open-weight model, running entirely offline on a desk-side workstation, cracks a commercial app's license check in 30 minutes :aiEnabled:newlyPossible:
+    XDA Developers — Adam Conway gave Qwen3.8-27B a static-analysis reverse-engineering job on a licensed app he owns (recovering an obfuscated cryptographic key and building a working auth bypass) that he expected would need a frontier cloud model; running locally on a single Nvidia GB10-class workstation, it ground through the obfuscated RSA implementation by repeatedly checking its own work until the recovered value matched byte-for-byte, finishing in about 30 minutes.
+    DELTA: a task Conway explicitly says he'd have associated with a frontier model a year or two ago now runs entirely on hardware sitting next to his desk, with no cloud account, no API bill, and no data leaving the room.
+    https://www.xda-developers.com/qwen-3-8-27b-reverse-engineering-job-frontier-model/
+*** LIKED A solo developer builds a sub-second, voice-driven AI companion that actively plays Skyrim alongside him :aiEnabled:diy:export:
+    Pantelis Kalogiros's project page (Hacker News front page) — Kalogiros wired together streaming speech-to-text, fast local text-to-speech, and a local fine-tuned LLM with a custom planning layer into "Varkos," a companion that listens, decides, and responds to what's happening in-game in well under a second, running on a MacBook plus a Windows gaming PC with a consumer-class GPU.
+    DELTA: real-time multimodal game AI like this used to be the province of a game studio's dedicated AI/voice team and cloud infrastructure; the full perceive-decide-respond loop is now something one developer assembles from open and optimized models on hardware he already owns.
+    https://pantel.is/projects/ai-gaming-companion/
+*** SKIP A free, single-download GUI turns a folder of photos into a textured 3D scan or Gaussian splat :openModels:amateurBeatsPro:
+    Hackaday, covering Edin Spiegel's Simple Photogrammetry GUI — Spiegel wrapped COLMAP, OpenMVS, mvs-texturing, PoissonRecon, and a Gaussian-splatting trainer (Brush) behind one artist-friendly interface, shipping as a Windows binary and a Linux AppImage with no compilation or command-line pipeline-wrangling required.
+    DELTA: the honest delta is modest — these open-source photogrammetry tools already existed, and free/cheap paths to this pipeline have been emerging for a couple of years. What's newly available is not the capability but the packaging: a non-programmer can now get commercial-suite-quality 3D scans and splats from a folder of phone photos by downloading one app, instead of hand-assembling a COLMAP/OpenMVS command-line pipeline or paying for a professional tool.
+    https://hackaday.com/2026/08/24/combining-photogrammetry-utilities-into-a-simple-gui-tool/

@@ -1,0 +1,84 @@
+Produce today's "The Future Is Now: Try This At Home, Kids" digest.
+
+THE CORE QUESTION, which every story must answer:
+"What can one person do NOW, at home, that they could NOT do 1 / 3 / 5 years ago?"
+
+This is a digest about capability thresholds getting crossed — the moment something moves from "needs a lab, a budget, a company, or a specialist" to "you could try this on a Saturday." A lot of this will be AI-driven, and that is expected and welcome. But see the AI rule below: AI is the TOOL IN SOMEONE'S HANDS, never the protagonist.
+
+0. SOURCE CADENCE — most sources are checked every day, a few are rate-limited. Before doing anything else:
+   - Find the cadence-state file: Drive `search_files` with query `title = 'digest-source-cadence.json'` (do NOT hardcode its fileId — find it fresh each run, same reasoning as story-log.org). `download_file_content` it and parse the JSON. It has `cadence_days` (per-source cadence in days) and `sources` (per-source `url`, `last_checked` ISO date or null, optional `note`).
+   - Daily-tier sources (cadence_days: 1) — check every run: hacker_news, marginal_revolution, hackaday, simon_willison, current_blog.
+   - Rate-limited sources — check only if due (today's date minus `last_checked` >= that source's cadence_days, or `last_checked` is null meaning never checked): emacs_news (weekly, 7 days), usenix_proceedings (monthly, 30 days), old_blog (monthly, 30 days).
+   - For every source you actually check this run (daily ones every time; rate-limited ones only when due), after finishing selection, update that source's `last_checked` to today's date (America/New_York, YYYY-MM-DD) in your in-memory copy of the JSON.
+   - At the very end of the run (after story-log.org is successfully updated), write the updated cadence JSON back: `create_file` a new file with the same title `digest-source-cadence.json`, the same parentId as the file you downloaded, contentMimeType `application/json`, `disableConversionToGoogleType: true`. Download it back to confirm it matches what you intended, then `trash_file` the old one. This is pure operational state (unlike story-log.org) — a full overwrite each run is fine, no byte-prefix check needed, but still do the download-back sanity check before trashing the old copy, and still leave exactly one file with that title.
+   - If the cadence-state file is ever missing, recreate it with all `last_checked` set to null (i.e. treat every source as due) rather than skipping cadence-gated sources.
+
+1. SOURCES.
+
+   a. Hacker News front page (https://news.ycombinator.com/ — also https://news.ycombinator.com/best). Look for "I built this," "I did this myself," "here's what's now possible" writeups. HN comment threads often reveal how hard this used to be — that's gold for the DELTA line; follow through to the underlying article and cite that.
+   b. Hackaday (https://hackaday.com/) — reliably strong for cheap-hardware-crosses-a-threshold and at-home builds.
+   c. Simon Willison (https://simonwillison.net/) — the single best source for "an individual can now do X with a model," with honest, tested detail.
+   d. Marginal Revolution (https://marginalrevolution.com/) — recent "Assorted links" / daily posts. Expect this to supply the TREND / near-term-future / academic-result slot rather than a build story. Follow through to the underlying linked article, cite the original source, and note "via Marginal Revolution."
+   e. George's own current blog, https://curious.port111.com/archive/ — daily tier. See the SELF-AUTHORED EXCEPTION below: a much lower bar applies here.
+   f. Sacha Chua's Emacs News, https://sachachua.com/topic/emacs-news/ — weekly tier, only when due per step 0.
+   g. Recent Usenix Papers, https://www.usenix.org/publications/proceedings — monthly tier, only when due per step 0.
+   h. George's old, mostly-inactive blog, http://curious.galthub.com/ — monthly tier, only when due per step 0. Same SELF-AUTHORED EXCEPTION as (e).
+   i. Only after working those, run general web searches to fill remaining slots.
+
+   SELF-AUTHORED EXCEPTION (sources e and h): if George himself did the thing and wrote it up, the bar for inclusion is very low — much lower than for third-party stories. It still has to nominally answer the core question (something that wasn't easy/possible 1/3/5 years ago), but you do not need the same rigor of independent verification, DELTA precision, or "was this really a threshold crossing" scrutiny you'd apply to a stranger's HN post. Default to including it. Most of what he's posted about himself should make the cut.
+
+   IN — the good stuff:
+   - A capability newly in reach of an individual, where you can state the before/after concretely.
+   - Practical try-this-yourself things: someone ran it themselves and wrote up how.
+   - AI as the ENABLER of a person's project — local/self-hosted models AND hosted/commercial models (Claude, GPT, Gemini, etc. via API or subscription) both count equally. The point is what the person did, not where the compute ran.
+   - Cheap hardware crossing a price/capability threshold.
+   - Open models, open data, or open tools replacing a paid gatekeeper or an institution.
+   - Amateurs/hobbyists doing what used to need a lab, a studio, or a pro team.
+   - Near-term trends (0-6 months out) and academic results that just became reproducible at home. One or two of these per digest is fine and expected — they don't need a named individual, but they DO need a concrete "and now you could actually do this" angle.
+
+   OUT — de-emphasize or skip:
+   - AI AS THE SUBJECT: model releases, benchmark scores, lab/company drama, capability discourse, "AI will change everything" think-pieces. If the headline is about a model rather than about what someone did with one, skip it.
+   - PRESS RELEASES, PRODUCT ANNOUNCEMENTS, AND MARKETING — hard exclude. This includes vendor/product-launch posts where nobody actually did the thing, sponsored or promotional content, and anything centered on an intro/promotional offer (free trial, sign-up-now, discount-code framing). Prefer someone who actually DID it and wrote it up over a company or vendor claiming it's possible.
+   - Pure nostalgia or retro revival with no new capability (the user has explicitly SKIPped this).
+   - Repair-for-its-own-sake, unless the repair demonstrates something genuinely newly possible (also explicitly SKIPped).
+   - Heavy clinical/medical research (implants, trials, hospital devices) — at most one, only if exceptional.
+   - Politics, environment, general business/market news.
+
+   BE HONEST ABOUT THE DELTA. The failure mode of this digest is hype: everything sounds newly possible if you squint. If you can't name what specifically changed and roughly when, the story doesn't belong. "Cheaper/faster than before" is not a threshold; "this required a $40k instrument in 2021 and now runs on a Pi" is. If the honest delta is small, say so or drop the story. (The self-authored exception above relaxes rigor, not honesty — still name the delta, just don't sweat it as hard.)
+
+2. Before finalizing selection, read the user's story log in Google Drive. Find it by title: use the Drive `search_files` tool with query `title = 'story-log.org'` (do NOT rely on a hardcoded fileId — the ID changes, see step 5). It is a plain-text org-mode file. From it:
+   - Read the "Preferences" section (under `* Preferences`) — the "Core question ::", "Lean toward ::", "Less interested in ::", "Note on AI ::", "Evidence bar ::", and "Sources to check ::" lines are AUTHORITATIVE and may have been edited by the user since the last run. If they conflict with anything above, the file wins. If "Sources to check ::" lists sources beyond those in step 1, check those too.
+   - Scan the "Digest Log" for headlines marked `LIKED` — lean toward similar themes/tags.
+   - Scan for headlines marked `WORKS` — this is a stronger signal than LIKED: the user not only liked the story but has personally tried it and verified it actually works. Treat WORKS themes/tags as a very strong lean-toward signal, weighted above plain LIKED.
+   - Scan for headlines marked `SKIP` — avoid similar themes/tags.
+   - Note the header now carries `#+SELECT_TAGS: export` and `#+EXCLUDE_TAGS: noexport`. This means org-export only includes headlines tagged `:export:` — everything else (including a plain NEW entry with no `:export:` tag) is excluded from export automatically. Existing LIKED/WORKS entries carry `:export:` in their tag block; you do not need to add `:noexport:` to anything.
+
+3. Select the top 3-5 stories for today. Verify each from its source page (date, who did what, what actually happened, and what it actually replaces) rather than trusting a search snippet or an HN title — except self-authored stories from George's own blogs, where the lighter bar in step 1 applies. Prefer stories from the last 24-48 hours (not applicable to rate-limited sources being checked for the first time in a while, or to self-authored posts, which may be somewhat older). Aim for a mix: mostly "someone did this at home," with room for one trend/near-term/academic item.
+
+4. Compose the digest as the final message text (this is what gets pushed/emailed to the user). Structure:
+   - A short intro line.
+   - Each story as a few sentences: name the person or group, what they built or did, and — critically — an explicit sentence on what this would have taken 1/3/5 years ago. That contrast IS the story; don't bury it.
+   - Where it's reasonable, a brief note on what it would take the user to try it himself (he's a Linux/Arch user who codes in bash, python, and elisp, and lives in emacs — so "runs on a consumer GPU," "it's a python script," "there's an emacs package," or "just an API call" are all worth a clause).
+   - Name the publication for each story.
+   - If you want to flag which of today's picks you'd lead with, or which felt weaker, say so IN THIS MESSAGE TEXT ("the strongest pick today is..."). That is the only place your own editorial opinion belongs — see the hard rule in step 5 about never expressing it inside story-log.org itself.
+   - Do NOT include URLs in this message — the user reads links in the log file instead.
+   - No process narration. Just the stories.
+
+5. Append today's stories to the story-log.org file found in step 2, following the file's existing org-mode conventions exactly:
+   - If a `** YYYY-MM-DD` heading for today (America/New_York date) doesn't already exist under `* Digest Log`, add one.
+   - Under it, one `*** NEW <story headline>` line per story, with 1-2 lowercase org tags in `:tag1:tag2:` format at the end of the headline. Reuse the file's topic tag vocabulary: :newly-possible: :ai-enabled: :cheap-hw: :open-models: :amateur-beats-pro: :diy: :workaround: :trend: :nearterm: :academic: :agency:
+   - Under each headline, three indented lines in this order:
+       Publication — one line on who did it and what it is.
+       DELTA: what this would have taken 1 / 3 / 5 years ago (cost, expertise, institution, or "impossible").
+       https://url
+     The DELTA line is MANDATORY on every story. URLs go HERE, in the file — always include them.
+
+   HARD RULES — these are non-negotiable, because a past run violated them and corrupted the file's review history:
+   - EVERY newly appended headline MUST use the literal keyword `NEW`. Never SKIP, LIKED, WORKS, or ARCHIVED on a story you are appending. You are not the reviewer — George is. Marking your own picks as SKIP or LIKED, even ones you personally have doubts about or feel strongly good about, corrupts the one signal this whole system depends on: that LIKED/WORKS/SKIP always mean George reviewed it. If you want to express a preference among today's picks, do it in the digest message (step 4), never in the file's TODO state.
+   - NEVER write a `- State "..." from "..." [...]` log line under a newly appended headline. Those lines are created exclusively by the user's own `C-c C-t` / `org-todo` actions and carry his timestamp. A freshly appended NEW entry has no log line at all (see the existing `Example:` entry and any other still-NEW headline in the file for the exact shape — headline, then straight into the Publication/DELTA/URL lines).
+   - NEVER retroactively edit the header (`#+TITLE`, `#+TODO`, `#+SELECT_TAGS`, `#+EXCLUDE_TAGS`, or the comment block), and never retroactively edit an existing headline's TODO state or tags, no matter how good the reason seems. If you think the export/tagging scheme genuinely needs a structural change, do NOT make it yourself — describe the proposed change in the digest message instead and let George decide.
+   - The ONLY content you may add this run is: (a) a new `** YYYY-MM-DD` heading if today's doesn't exist yet, and (b) new `*** NEW ...` story blocks under it, both appended at the true end of the file. Nothing before that point may differ from what you downloaded. If you find yourself needing to change anything else to make today's entries "fit" (a tag scheme, a header line, an old entry), STOP, do not write to Drive, and explain the situation in the digest message instead — an unresolved formatting question is far better than a corrupted file.
+
+   - MECHANICS: the Drive connector has no in-place content-edit tool (`update_file` only changes metadata). So: `download_file_content` to get the current bytes, decode, append locally, verify the old content is still an exact byte-prefix of the new content — this check is not a formality, if it fails it means you drifted from append-only and you must stop and re-derive your change rather than force it through — then `create_file` a new file with title `story-log.org`, the SAME parentId as the original, contentMimeType `text/org`, and `disableConversionToGoogleType: true`. Then download the new file back and confirm it matches byte-for-byte, and only then `trash_file` the old one. This leaves exactly one `story-log.org` so the title lookup in step 2 stays unambiguous. Never overwrite destructively without that verification.
+   - Today's normal daily entries always append at the very end of the file (under today's date, which is always the latest date in the log) — do not insert them elsewhere.
+   - HISTORICAL / BACKFILL IMPORTS ARE OUT OF SCOPE for this routine daily run. If a source (e.g. the blogs) surfaces something old that you're tempted to backdate into correct chronological position earlier in the Digest Log, don't — that requires careful mid-file insertion this automated daily pass isn't built for. Just skip it, or if it's clearly still relevant, log it under today's date with its true original publish date noted in the Publication line. A proper chronological historical import is a separate, occasional operation George runs deliberately (not this daily task) — leave that alone.
