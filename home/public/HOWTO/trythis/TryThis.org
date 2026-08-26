@@ -1,3 +1,4 @@
+#+TITLE: The Is Now - Try This At Home Kids.
 #+SUBTITLE: Things you can do today
 #+TODO: NEW(n) | WORKS(w) LIKED(l) SKIP(s) ARCHIVED(a)
 #+SELECT_TAGS: export
@@ -204,3 +205,20 @@ A few of my favorites (so far):
     Hackaday, covering Edin Spiegel's Simple Photogrammetry GUI — Spiegel wrapped COLMAP, OpenMVS, mvs-texturing, PoissonRecon, and a Gaussian-splatting trainer (Brush) behind one artist-friendly interface, shipping as a Windows binary and a Linux AppImage with no compilation or command-line pipeline-wrangling required.
     DELTA: the honest delta is modest — these open-source photogrammetry tools already existed, and free/cheap paths to this pipeline have been emerging for a couple of years. What's newly available is not the capability but the packaging: a non-programmer can now get commercial-suite-quality 3D scans and splats from a folder of phone photos by downloading one app, instead of hand-assembling a COLMAP/OpenMVS command-line pipeline or paying for a professional tool.
     https://hackaday.com/2026/08/24/combining-photogrammetry-utilities-into-a-simple-gui-tool/
+** 2026-08-26
+*** LIKED A Raspberry Pi 5 running a local 35B-parameter model turns a car into a hands-free AI copilot :aiEnabled:cheapHw:
+    Hacker News (Show HN), CarWatch by Petrus Pennanen (ThinkOffApp) — a Raspberry Pi 5 wired to a dashcam, a USB mic, and an OBD-to-ethernet cable runs Qwen 3.6-35B locally via llama.cpp, answering questions from the car's 745-page manual with RAG citations, reporting live engine metrics, and pulling dashcam clips — fully offline, no cloud account.
+    DELTA: as recently as 2023 a Raspberry Pi couldn't run anything near a 35B model; dynamic quantization (Unsloth) and llama.cpp's maturity plus the Pi 5's jump in horsepower are what collapsed the barrier — a hobbyist now runs a genuinely capable local LLM in a car for the price of a Pi and a used dashcam.
+    https://github.com/ThinkOffApp/CarWatch
+*** SKIP TeXbrain: a full LaTeX editor that compiles to PDF entirely inside the browser, no install, no Overleaf account :workaround:trend:
+    Hacker News (Show HN), TeXbrain by Braian Plaku — wraps the SwiftLaTeX WebAssembly build of pdfTeX plus a JS git implementation and the File System Access API into a single-tab editor: write LaTeX, get a PDF, edit local files, all client-side and offline-capable.
+    DELTA: honest delta is more about polish than raw capability — WASM pdfTeX itself has existed for a few years — but getting a real TeX distribution running used to mean a multi-gigabyte local install or a paid/rate-limited cloud service; browser file-system APIs and git-in-JS maturing is what makes a "just open a tab" version genuinely usable now.
+    https://github.com/swimmingbrain/texbrain
+*** WORKS Bridging handwritten trail notes and AI editing on a hike-prep test run :aiEnabled:workaround:
+    curious.port111.com (George's own blog) — while prepping for the Kungsleden hike, George tried voice-journaling on his phone, found it awkward, and settled instead on a pencil-and-notepad-to-AI-transcription pipeline: write by hand, transcribe, then hand the electronic text to "the AIs" for review.
+    DELTA: reliable AI transcription of handwriting/voice into clean electronic text good enough to hand straight to an editing AI is a recent (few-years) development; the honest point of the post is less "newly possible" than a personal verdict on which capture method suits which kind of thought.
+    https://curious.port111.com/2026/08/22/will-voice-kill-the-keyboard.html
+*** LIKED self-httpd: a webserver that IS a single SQLite file — code, content, routes, and visitor logs all in one queryable executable :aiEnabled:diy:
+    Hacker News, Farid Zakaria's blog ("Queryable Executables") — an AI-assisted, admittedly half-baked proof-of-concept where the entire deployed artifact is one SQLite database: scp one file to deploy, then edit the live site with SQL instead of restarting a server, inheriting full-text search and audit trails for free.
+    DELTA: modest delta — SQLite-backed servers aren't new — but collapsing deploy state, content, and logs into one file a solo developer edits with plain SQL, built solo with AI as the coding partner, is a smaller lift than assembling the same idea by hand would have been a few years back.
+    https://fzakaria.com/2026/08/24/actually-queryable-executables
