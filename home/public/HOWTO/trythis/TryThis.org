@@ -181,7 +181,7 @@ A few of my favorites (so far):
     DELTA: growing the GaN crystal itself is still an industrial MOCVD job, but the chip-fab steps after that — lithography-free laser patterning, metal contacts, dicing, packaging — used to mean university cleanroom access; now they run on a ~$160 commercial epiwafer, a consumer Chinese UV laser marker, and a benchtop sputter coater on a home bench.
     https://hackaday.com/2026/08/23/making-leds-in-the-home-fab/
 *** WORKS A free public MuScriptor instance turns any song into multi-instrument MIDI :openModels:aiEnabled:export:
-    Hacker News (Show HN), pianoify.net by a solo developer (jardy / jerryzhou196) — wraps Kyutai and Mirelo's openly released MuScriptor model in a free page: drop in an audio file or YouTube link and get back accurate, multi-instrument MIDI, code on GitHub.
+    Hacker News (Show HN), pianoify.net by a solo developer (jardy / jerryzhou196) — wraps Kyutai and Mirell's openly released MuScriptor model in a free page: drop in an audio file or YouTube link and get back accurate, multi-instrument MIDI, code on GitHub.
     DELTA: full-mix, multi-instrument audio-to-MIDI transcription used to mean a paid subscription service like Chordify with mediocre accuracy, or hours of transcribing by ear; now it's a free page sitting on top of an openly released model, with the code and weights available to self-host.
     https://www.pianoify.net/
 *** ARCHIVED Figmimic: a bookmarklet that copies any webpage into Figma as editable layers :workaround:diy:
@@ -222,3 +222,59 @@ A few of my favorites (so far):
     Hacker News, Farid Zakaria's blog ("Queryable Executables") — an AI-assisted, admittedly half-baked proof-of-concept where the entire deployed artifact is one SQLite database: scp one file to deploy, then edit the live site with SQL instead of restarting a server, inheriting full-text search and audit trails for free.
     DELTA: modest delta — SQLite-backed servers aren't new — but collapsing deploy state, content, and logs into one file a solo developer edits with plain SQL, built solo with AI as the coding partner, is a smaller lift than assembling the same idea by hand would have been a few years back.
     https://fzakaria.com/2026/08/24/actually-queryable-executables
+** 2026-08-28
+*** SKIP A two-person team decompiles a Nintendo 64 game solo in 84 days, down from 596 :aiEnabled:newlyPossible:
+    blog.chrislewis.au, via Hacker News — Chris Lewis and a small crew of contributors fully decompiled Snowboard Kids (N64), matching all 2,145 functions byte-for-byte against the original ROM.
+    DELTA: his own prior N64 decompile (Snowboard Kids 2) took 596 days around 2021; this one, built on frontier AI models (GPT, Claude, GLM) paired with an agent harness, plus improved community tooling (the permuter, m2c, N64 Decomp Workbench), took 84 days — roughly a 7x speedup, though he's careful to credit human collaborators for the ~5% of commits AI couldn't handle.
+    https://blog.chrislewis.au/decompiling-a-nintendo-64-game-in-84-days/
+*** SKIP A vibecoded fuzzer finds a real crash bug in FFmpeg, the library behind half the internet's video :aiEnabled:diy:
+    Hacker News, via the FFmpeg issue tracker — security researcher Darío Clavijo built an AI-assisted ("vibecoded") fuzzing harness and used it to find a divide-by-zero crash in FFmpeg's VPK demuxer, then filed it upstream.
+    DELTA: writing a fuzzing harness capable of finding a genuine bug in a mature, heavily-audited C codebase like FFmpeg used to require real fuzzing expertise (AFL/libFuzzer harness design, corpus curation, patience); here an individual vibecoded the harness with AI assistance and it turned up a real (if modest, denial-of-service-class) bug almost immediately.
+    https://code.ffmpeg.org/FFmpeg/FFmpeg/issues/24290
+*** LIKED Emacs 31's tree-sitter Markdown mode edits fenced code blocks in their own language, live, inside your Markdown buffer :trend:nearterm:
+    rahuljuliato.com, via Hacker News — an unofficial guide to markdown-ts-mode, Emacs 31's upcoming built-in Markdown major mode, covering the full CommonMark and GFM spec with per-block, language-aware editing.
+    DELTA: the old markdown-mode could color a fenced code block but couldn't give you real indentation and editing rules for the language inside it; tree-sitter parsing lets point-inside-a-Python-block behave like an actual Python buffer, with no mode-within-mode glue code required.
+    https://rahuljuliato.com/posts/markdown-ts-mode-emacs-31
+** 2026-08-29
+*** SKIP Home-casting engine cylinders with a 3D-printed pattern, a homemade kiln, and scrap aluminum wheels :cheapHw:diy:
+    Hackaday, covering Camden Bowen's lost-PLA casting build — Bowen 3D-printed PLA patterns, packed them in plaster-and-sand molds, burned out the plastic in a propane kiln he built from cement and perlite, then cast the cavities with aluminum melted down from old alloy wheels to produce working engine cylinders.
+    DELTA: machining a comparable aluminum part used to mean access to industrial CNC milling and machinist expertise, wasting most of a solid billet as swarf; now a consumer 3D printer, a home-built kiln, and scrap wheels get a hobbyist to a cast metal part with minimal prior metalworking experience.
+    https://hackaday.com/2026/08/28/casting-engine-parts-from-3d-prints/
+*** SKIP A syringe-pump 3D printer that extrudes epoxy into a support bath, no toolhead required :diy:newlyPossible:
+    Hackaday, covering Riley's Lab — Riley built a mostly-3D-printed syringe-pump extruder and printed into a shear-thinning oil-and-fumed-silica bath, successfully casting a two-part-epoxy Benchy that held together and survived a wash in isopropyl alcohol.
+    DELTA: embedded/liquid-material 3D printing like this used to mean either a commercial silicone toolhead (e.g. Prusa's) or an academic bioprinting lab; now it's a printed syringe pump and a mixed bath of oil and fumed silica on a home bench.
+    https://hackaday.com/2026/08/27/support-bath-enables-an-epoxy-benchy/
+*** LIKED A lone volunteer's offline-maps app guided rescuers through Venezuela's earthquake zone with no signal :openModels:agency:
+    Humanitarian OpenStreetMap Team (HOT) — CoMaps, an open-source offline navigation app built on volunteer-crowdsourced OpenStreetMap data, let CoMaps co-founder Anton Wenemoser personally guide an El Salvadoran rescue team through terrain their standard tools didn't cover, drawing on buildings mapped by volunteers just days earlier.
+    DELTA: CoMaps didn't exist 5 years ago, and even 3 years ago the map-update pipeline had roughly a 10-day lag; a recently upgraded server now pushes crowd-mapped updates weekly, so a volunteer with a phone and no cellular signal can out-navigate a professional response team's usual tools.
+    https://hotosm.org/en/news/comaps-the-offline-app-that-guided-rescuers-without-a-signal-in-the-venezuela-response/
+** 2026-08-30
+*** SKIP A free, local tool boots a full virtual iPhone on your own Mac, no Corellium subscription needed :openModels:agency:
+    GitHub (vphone-cli by Lakr233), via Hacker News — a command-line tool that uses Apple's own Virtualization.framework to boot a complete, working iOS environment on any Apple Silicon Mac running macOS 15+, no jailbreak needed for the base image.
+    DELTA: at-scale iOS testing and automation outside a physical device used to mean paying for a hosted virtual-device farm like Corellium, priced for professional teams; now it's a free open-source tool plus a Mac you probably already own.
+    https://github.com/Lakr233/vphone-cli
+*** LIKED A $10 ESP32 board with a resistive touchscreen browses a full offline Wikipediapedia :cheapHw:openModels:
+    Hackaday, covering Alun Morris's build — Morris converted a Kiwix offline-Wikipedia dump into a format a "Cheap Yellow Display" (ESP32 plus SD card plus resistive touchscreen, sold for around $10-15) can browse standalone, no phone, laptop, or server in the loop.
+    DELTA: offline encyclopedia access on a dedicated handheld used to mean a purpose-built device like the old WikiReader; now it's a mass-produced hobbyist board a tenth the price, repurposed with open firmware and an open dataset.
+    https://hackaday.com/2026/08/29/wikipedia-on-a-cheap-yellow-display/
+*** SKIP A hobbyist writes a working 3D-printing slicer from scratch, just to see how one works :diy:agency:
+    Hacker News (Show HN), akintokinematics.com by Michael Greer — Greer built a slicer in Rust from first principles (walls, floors, ceilings, infill, G-code output), deliberately without AI assistance or looking at existing slicer source, purely to understand the geometry problem.
+    DELTA: the geometry-library gap that used to make "write your own slicer" a multi-year undertaking has narrowed considerably — full-featured polygon-offsetting libraries are now a dependency away in most languages, leaving the interesting (and still hard) part exposed for one person to tackle as a weekend project.
+    https://akintokinematics.com/to-figure-out-how-3d-printing-slicers-work-i-wrote-one-from-scratch/
+** 2026-08-31
+*** WORKS An open speech-model pipeline auto-syncs any ebook to its audiobook, chapter markers included :openModels:aiEnabled:export:
+    smoores.dev — independent developer Shane Friedman built Storyteller, an open-source ecosystem (web, Android/iOS, KOReader plugin) using open speech models (MMS, Wav2Vec2, CTC/Viterbi decoding) to force-align any ebook and its audiobook.
+    DELTA: word-synced narration highlighting used to mean Amazon's closed, publisher-gated Whispersync, or manually matching chapters by hand ("very manual and rather challenging" since most audiobooks lack chapter metadata); now an open pipeline does it for free, with a KOReader plugin ready to go.
+    https://smoores.dev/post/automating_immersive_reading/
+*** WORKS A free, self-hosted script replaces a $20+/month data-broker-removal subscription :agency:workaround:export:
+    GitHub (k7cfo/remove-your-data), via Hacker News Show HN — an open-source Python tool that automates the same free opt-out forms broker-removal subscriptions use, with a local SQLite log; can be driven by pointing a coding agent at the repo.
+    DELTA: escaping the people-search industry used to mean paying a recurring subscription that "files the same free forms, then charges rent because brokers re-scrape," or doing every opt-out by hand yourself; now it's a free script on your own machine.
+    https://github.com/k7cfo/remove-your-data
+*** LIKED An open-source humanoid robot, built mostly from desktop 3D-printed actuators, comes in under $5,000 :trend:cheapHw:export:
+    Hackaday, covering UC Berkeley's Hybrid Robotics lab — a fully documented open-source humanoid whose actuators (motor plus 3D-printed cycloidal gearbox and magnetic encoder) can be printed and assembled at home for under $5,000 in parts.
+    DELTA: lab research, not a lone hobbyist, and the design dates to 2025; what's new is a genuinely reproducible, fully documented build undercutting commercial/research humanoids costing $15,000 to well over $100,000.
+    https://hackaday.com/2026/08/30/lower-cost-humanoid-robot-leverages-diy-actuators/
+*** SKIP A $50-ish ESP32 stovepipe monitor catches the woodstove mistake that actually starts chimney fires :cheapHw:diy:export:
+    Hackaday, covering Reddit user nas886's build — an ESP32 plus a stovepipe temperature probe and a walnut-enclosure LED alert box flagging when a wood stove runs too cold (the real danger, since it lets creosote build up) or too hot.
+    DELTA: modest — ESP32 temperature monitoring isn't new; what changed is turning constant fire-watching into an unattended alert box anyone with a soldering iron can build, well enough the builder now sells finished units.
+    https://hackaday.com/2026/08/30/woodstove-assistant-keeps-the-heat-on-safely/
