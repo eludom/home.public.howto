@@ -278,3 +278,33 @@ A few of my favorites (so far):
     Hackaday, covering Reddit user nas886's build — an ESP32 plus a stovepipe temperature probe and a walnut-enclosure LED alert box flagging when a wood stove runs too cold (the real danger, since it lets creosote build up) or too hot.
     DELTA: modest — ESP32 temperature monitoring isn't new; what changed is turning constant fire-watching into an unattended alert box anyone with a soldering iron can build, well enough the builder now sells finished units.
     https://hackaday.com/2026/08/30/woodstove-assistant-keeps-the-heat-on-safely/
+** 2026-09-01
+*** LIKED A hobbyist turns three security cameras into a 24/7 open-model bird ID station :openModels:diy:
+    jasontucker.blog (Jason Tucker), via Hacker News — repurposed three existing security-camera microphones to run BirdNET-Go, a free self-hosted Docker app running two open acoustic-ID models (Cornell's BirdNET 2.4, 6,000 species; Google's Perch v2, 14,795 species) for continuous real-time bird identification, logging to Home Assistant/MQTT and Discord.
+    DELTA: originally posted in June 2026, resurfaced today on HN with 160+ points; continuous bird ID at this fidelity used to mean either a research-grade acoustic monitoring station or manually checking a phone app (Merlin) each time you noticed a bird — open acoustic models only got good enough for home use a few years ago, and the real news here is turning hardware you already own into a free, always-on naturalist log with no subscription.
+    https://jasontucker.blog/how-i-turned-my-security-cameras-into-an-automatic-bird-identification-system-with-birdnet-go/
+*** LIKED RotaryCell gives an unmodified vintage rotary phone full cellular service :cheapHw:diy:
+    GitHub (fregacmols/RotaryCell), via Hacker News — a hand-wired ESP32-S3-plus-cellular-modem board and a telecom subscriber-line-interface chip give a completely unmodified rotary phone real cellular calling (mechanical bell, dial, and handset audio all work over LTE), battery-powered and fully reversible.
+    DELTA: getting a rotary phone off landline-only PSTN service used to mean either abandoning it or an irreversible, specialist telecom-engineering conversion; today's all-in-one ESP32+LTE dev boards (roughly $30-40) plus an off-the-shelf line-interface chip turn that into a weekend electronics project — still a hand-wired prototype awaiting PCB validation, but designed and demoed solo.
+    https://github.com/fregacmols/RotaryCell
+*** LIKED A single web page turns a laser pointer and webcam into real-time graffiti :diy:newlyPossible:
+    laser.consti.de (Show HN) — a browser page tracks a laser pointer via webcam and projects real-time graffiti with six brushes (ink drips, particle trails, kaleidoscope mode, even a playable tic-tac-toe), zero install, zero dependencies.
+    DELTA: the effect nods to 2007-era Graffiti Research Lab laser-tagging projects that needed custom computer-vision code, camera calibration, and dedicated software; browser-based real-time computer vision has matured enough that the same trick is now a single HTML page — open Chrome, point a cheap laser pointer, and go.
+    https://laser.consti.de
+** 2026-09-02
+*** ARCHIVED A Show HN tool streams a 104GB AI model's experts from SSD to run it on an ordinary 48GB Mac :cheapHw:aiEnabled:
+    GitHub (carloslfu/slotstream), via Hacker News Show HN — keeps only the actively-used experts (10 of 512 per layer) of a 104GB Qwen3.8-Flash-Next mixture-of-experts model cached in RAM, streaming the rest from disk on demand.
+    DELTA: running a 104GB model used to mean renting a cloud GPU or buying a Mac with 128GB+ of extreme-cost unified memory; this technique gets it running on a stock 48GB Mac (about 33GB RAM used, ~12 tok/s), with an estimated ~5 tok/s even on 16GB.
+    https://github.com/carloslfu/slotstream
+*** ARCHIVED A from-scratch transformer trained for 67 cents on a home GPU matches specialized systems on the ARC-1 reasoning benchmark :academic:nearterm:
+    mvakde.github.io (Mithil Vakde), via Hacker News — a small transformer built from scratch (SwiGLU, RMSNorm, 3D RoPE for grid inputs), trained in about 1.5 hours on a single consumer RTX 5090, hits 44% on ARC-AGI-1, matching specialized systems and beating many general-purpose LLMs on the benchmark.
+    DELTA: competitive ARC-1 scores used to require large-scale, expensive training runs or a frontier LLM's API bill; this result was reproduced solo, on one consumer GPU, for under a dollar of compute.
+    https://mvakde.github.io/blog/44-on-arc-1/
+*** LIKED A Mac mini running local models replaces two $200/month AI subscriptions :aiEnabled:agency:
+    lws.io (Kevin Lewis) — runs Qwen3.6-35B and a smaller Gemma model locally on an M4 Pro Mac mini (48GB RAM) via an MLX inference server, reachable from his phone and laptop over Tailscale, backing a Telegram/desktop assistant and a coding agent.
+    DELTA: he says he was "regularly maxing out two $200/month" cloud API subscriptions; consumer-Mac local inference now replaces that recurring cost with a one-time hardware purchase, with no rate limits and no data leaving the machine.
+    https://lws.io/blog/my-local-model-setup/
+*** LIKED A veteran Python developer ships a new library without writing any of its code by hand :aiEnabled:workaround:
+    grahamdumpleton.me (Graham Dumpleton, creator of wrapt and mod_wsgi), via Simon Willison — wrapture, a new Python monkeypatching/tracing library (an alternative to unittest.mock, with OpenTelemetry support), which Dumpleton says was written end to end, "every line of code and documentation," by an AI assistant working under his direction.
+    DELTA: this isn't vibe-coding by a novice — Dumpleton is a 20+-year Python systems expert; the delta is that his expertise now goes entirely into directing and validating an AI's implementation rather than typing the code himself, and a working, documented library shipped that way.
+    https://grahamdumpleton.me/posts/2026/08/introducing-wrapture/
